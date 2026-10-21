@@ -91,7 +91,7 @@ svreview verdicts --verdicts <site>/verdicts.tsv --candidates <set>/candidates.t
 # a set from one kmer-discovery run (a cohort's table comes from the screen itself)
 svreview candidates --run out/KID.discovery --trio KID --out set/candidates.tsv [--sex 2] [--classes SV,AMBIGUOUS]
 svreview bundle --candidates set/candidates.tsv --child kid.cram --father dad.cram --mother mom.cram \
-    --ref ref.fa --out-dir set/bundles --pad 10000 [--tier 1,2] [--cram]
+    --ref ref.fa --out-dir set/bundles --pad 10000 [--tier 1,2] [--cram]   # --cram: self-contained CRAMs
 #   then set/trios.tsv by hand (trio, child, father, mother; metrics and informative under runs/) and svreview check
 ```
 
@@ -127,7 +127,7 @@ the size). The browser could decode them - `@gmod/cram` does - but a CRAM cut ag
 embedded reference needs the reference's bases at every window, which means shipping a slice of the reference
 per bundle (a new piece of the contract) or a 3 GB FASTA behind a static site. svreview converts every member
 to BAM at site-build time instead (`svreview site`, one pysam pass per member, the reference at hand there,
-or embedded in the CRAM as `svreview bundle --cram` and the trio screen's bundles have it). A mini-BAM is a
+or embedded in the CRAM, as the trio screen's bundles have it and as `svreview bundle --cram` writes it: self-contained, naming no file). A mini-BAM is a
 few MB, self-contained, and what every other tool reads too; the CRAMs stay as the archival copy.
 
 **No build step.** The page is plain HTML, CSS and ES modules; the BAM reader is its own (`docs/js/bgzf.js`,

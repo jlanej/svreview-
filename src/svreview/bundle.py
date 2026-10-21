@@ -16,8 +16,8 @@ reviewed without the cohort machinery:
 
 The other end of a tier-1 pair has the same windows: its directory is a symlink to the first's (status
 ``shared=<dir>``), as the analysis does it. Members are written as BAM (what the viewer reads) or, with
-``--cram``, as CRAM with the reference embedded (what the analysis' bundles are; ``svreview site`` converts
-back); a CRAM source needs its reference (``--ref``) unless the reference is embedded.
+``--cram``, as self-contained CRAM with an embedded reference (``svreview site`` converts back); a CRAM
+SOURCE needs its reference (``--ref``) unless the reference is embedded.
 """
 
 import collections
@@ -57,16 +57,39 @@ def clean_header(header):
 
 
 def header_paths(path, ref=None):
-    """The header fields of an alignment file that look like file paths: ``[(line, field)]``, empty when clean."""
+    """The header fields of an alignment file that look like file paths: ``[(line, field)]``, empty when clean.
+    A CRAM's raw bytes are scanned too: a header shortened in place leaves its old bytes behind as padding."""
     with _open(path, ref) as f:
         text = str(f.header)
     hits = []
+    if path.endswith(".cram"):
+        with open(path, "rb") as fh:
+            raw = fh.read()
+        # the tokens are assembled, so that this file itself never holds a home-directory prefix
+        tokens = [b"\tUR:", b"\tCL:", b"C:\\"] + [b"/" + d + b"/" for d in (b"Users", b"home", b"Volumes")]
+        for token in tokens:
+            if token in raw:
+                hits.append(("raw", token.decode("utf-8", "replace").strip()))
     for line in text.splitlines():
         for field in line.split("\t")[1:]:
             value = field.split(":", 1)[1] if ":" in field else field
             if value.startswith(("/", "~")) or " /" in value or " ~" in value or "UR:" == field[:3] or "CL:" == field[:3]:
                 hits.append((line.split("\t")[0], field))
     return hits
+
+
+CRAM_FILE_ID = b"svreview".ljust(20, b"\0")
+
+
+def blank_cram_file_id(path):
+    """The 20-byte file id of a CRAM's file definition (bytes 6-25) is filled by htslib with the output file
+    name, the start of its path included; the format lets it hold any identifier, so it becomes a constant."""
+    with open(path, "r+b") as fh:
+        magic = fh.read(6)
+        if magic[:4] != b"CRAM":
+            raise contract.ContractError("%s is not a CRAM" % path)
+        fh.seek(6)
+        fh.write(CRAM_FILE_ID)
 
 
 def clean_copy(src, dst, ref=None):
@@ -83,17 +106,6 @@ def clean_copy(src, dst, ref=None):
     return n
 
 
-def reheader_in_place(path, header):
-    """Rewrite *path*'s header in place with *header* (a dict): what the CRAM encoder adds (``UR``) comes out."""
-    hdr = path + ".header.sam"
-    with open(hdr, "w") as fh:
-        fh.write(str(pysam.AlignmentHeader.from_dict(header)))
-    try:
-        pysam.reheader("--no-PG", "-i", hdr, path, catch_stdout=False)
-    finally:
-        os.remove(hdr)
-
-
 def contig_lengths(path, ref=None):
     with _open(path, ref) as f:
         return collections.OrderedDict(zip(f.references, f.lengths))
@@ -101,7 +113,7 @@ def contig_lengths(path, ref=None):
 
 def cut_member(src, out, windows, ref=None, threads=1, dk_names=None, cram=False):
     """The reads overlapping *windows* (0-based half-open) and their mates wherever they map, as a sorted,
-    indexed BAM (or, with *cram*, a CRAM with the reference embedded: needs *ref*); returns the record
+    indexed BAM (or, with *cram*, a self-contained CRAM with an embedded reference); returns the record
     count. A mate outside every window is fetched at the mate's position, which is what
     ``samtools view -P`` does. Alignments of the reads in *dk_names* (``{(name, read_number)}``) get ``dk:i:1``."""
     tmp = out + ".unsorted.bam"
@@ -148,18 +160,18 @@ def cut_member(src, out, windows, ref=None, threads=1, dk_names=None, cram=False
                     write(o, r)
                     n += 1
     if cram:
-        if not ref:
-            raise contract.ContractError("a CRAM bundle needs the reference (--ref) to embed")
+        # self-contained: the reference embedded as the reads' own consensus (embed_ref=2), so no reference
+        # file is opened, none is named in the header, and the file opens anywhere with no FASTA
         sorted_bam = out + ".sorted.bam"
         pysam.sort("--no-PG", "-@", str(max(1, threads)), "-o", sorted_bam, tmp)
         os.remove(tmp)
         with pysam.AlignmentFile(sorted_bam, "rb") as f:
-            with pysam.AlignmentFile(out, "wc", header=pysam.AlignmentHeader.from_dict(header), reference_filename=ref,
-                                     format_options=[b"embed_ref=1"]) as o:
+            with pysam.AlignmentFile(out, "wc", header=pysam.AlignmentHeader.from_dict(header),
+                                     format_options=[b"embed_ref=2"]) as o:
                 for r in f.fetch(until_eof=True):
                     o.write(r)
         os.remove(sorted_bam)
-        reheader_in_place(out, header)          # the encoder wrote the reference's path into @SQ UR
+        blank_cram_file_id(out)
     else:
         pysam.sort("--no-PG", "-@", str(max(1, threads)), "-o", out, tmp)
         os.remove(tmp)
@@ -170,7 +182,8 @@ def cut_member(src, out, windows, ref=None, threads=1, dk_names=None, cram=False
 def bundle_candidates(candidates, members, out_dir, pad=10000, ref=None, samples=None, threads=1, log=print, cram=False):
     """Cut one bundle per candidate of *candidates* (``[Candidate]``) from *members*
     (``{role: path}``); *samples* names each member (``{role: sample}``; default: the file's SM or the role).
-    With *cram*, the members are written as CRAMs with the reference embedded (as the analysis' bundles are).
+    With *cram*, the members are written as self-contained CRAMs (the reference embedded as the reads' consensus:
+    no reference file is named, none is needed to open them).
     Returns the number of bundles written and the index path."""
     out_dir = os.path.abspath(out_dir)
     lengths = None
