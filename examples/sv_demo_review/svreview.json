@@ -1,0 +1,6 @@
+{
+ "format": 1,
+ "title": "the sv_demo trio (kmer_denovo_filter examples/sv_demo)",
+ "pad": 700,
+ "reference": "the simulator's random 90 kb reference (chr1 60 kb, chr2 30 kb)"
+}

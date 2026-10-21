@@ -1,0 +1,2 @@
+trio	child	father	mother	child_sex	metrics	informative
+sv_demo	child	father	mother	0	runs/sv_demo.metrics.json	runs/sv_demo.informative.bam

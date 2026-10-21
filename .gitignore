@@ -21,3 +21,5 @@ node_modules/
 /docs/example/data/
 /docs/example/work/
 !/docs/demo/**
+# the shipped example set is the one place CRAMs live: the demo's, 5 KB a member, the reference embedded
+!/examples/sv_demo_review/**
