@@ -53,7 +53,11 @@ def write_set(set_dir, prefix, members, ref, pad=700, title=None, threads=1, log
                                          samples=dict((r, r) for r in contract.ROLES), threads=threads, log=log, cram=True)
     for ext in RUN_FILES:
         src = prefix + ext
-        if os.path.isfile(src):
+        if not os.path.isfile(src):
+            continue
+        if ext == ".informative.bam":
+            bundle.clean_copy(src, os.path.join(set_dir, "runs", TRIO + ext))      # its header names the run's paths
+        elif ext != ".informative.bam.bai":
             shutil.copyfile(src, os.path.join(set_dir, "runs", TRIO + ext))
     events = os.path.join(os.path.dirname(prefix), "events.tsv")
     if os.path.isfile(events):

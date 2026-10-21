@@ -1,7 +1,7 @@
 # The review set: svreview's input format (version 1)
 
 One directory holds everything a review needs. Whoever runs the discovery - the 1000 Genomes trio screen,
-the GMKF arm, a single trio at home - writes one of these; svreview reads nothing else, so no arm needs an
+another cohort's arm, a single trio at home - writes one of these; svreview reads nothing else, so no arm needs an
 adapter inside svreview, and `svreview check` says whether a set is complete before anyone opens it.
 
 ```
@@ -45,8 +45,8 @@ A table with only the four required columns is a valid set (no evidence, no junc
 tier `.`): the viewer draws what the bundle holds. Everything the 1000 Genomes screen's table carries
 (`summarize_trios.py`, then `flag_candidates.py`) is already this layout, in this column order.
 
-**From a table of pairs** (one row per junction with `chrom1 start1 end1 chrom2 start2 end2`, as the GMKF
-arm's `collate.py` writes): emit one row per end, each with `junctions` naming the other end (one entry per
+**From a table of pairs** (one row per junction with `chrom1 start1 end1 chrom2 start2 end2`, as a cohort
+arm's collate step may write): emit one row per end, each with `junctions` naming the other end (one entry per
 orientation, the pair's strands and molecules), `both_ends` 1, the end's own evidence columns (`bp1_*` for the
 first row, `bp2_*` for the second), the pair's flags on both; a region without a junction is one row with
 `junctions` `.`.

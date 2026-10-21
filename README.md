@@ -15,7 +15,7 @@ they are given; a site folder can also be opened straight from the page, with no
 
 The input is **one review set** ([docs/FORMAT.md](docs/FORMAT.md)): a directory with the candidate table, a
 trios table and the reads per candidate (bundles) or per trio. Any analysis - the 1000 Genomes trio screen,
-the GMKF arm, a single trio at home - writes one; `svreview check` says whether it is complete; nothing inside
+another cohort's arm, a single trio at home - writes one; `svreview check` says whether it is complete; nothing inside
 svreview is specific to any of them.
 
 **Status: 0.1.0, the first version.** The viewer works on the demo (the tool's own simulated trio: the set
@@ -73,7 +73,7 @@ is a complete set. In short:
   verdicts.tsv       what the review writes back
 ```
 
-The 1000 Genomes trio screen's table and bundles are this layout already; a table of junction pairs (the GMKF
+The 1000 Genomes trio screen's table and bundles are this layout already; a table of junction pairs (another
 arm's) becomes it by writing one row per end; per-trio minified CRAMs stand in for bundles through
 `trios.tsv`. Coordinates are BED's (0-based, half-open); `.` is missing, never 0; nothing is ever dropped.
 

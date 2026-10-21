@@ -43,7 +43,7 @@ svreview site set --out docs/example/NA19139 --title "NA19139 (1000 Genomes YRI 
 #      --candidates set/candidates.tsv --out set/candidates.verdicts.tsv
 ```
 
-Or, with the Analysis-side review bundles already cut (the trio screen's `bundle_candidates.py`, mini-CRAMs
+Or, with the analysis' own review bundles already cut (the trio screen's `bundle_candidates.py`, mini-CRAMs
 with the reference embedded, `bundle.tsv`): they are the set's `bundles/` as they are; add `candidates.tsv`
 (the screen's `review_set.tsv`) and `trios.tsv`, and steps 2 and 3 are `svreview check` and `svreview site`.
 
@@ -54,7 +54,7 @@ with the reference embedded, `bundle.tsv`): they are the set's `bundles/` as the
   strongest tiers first), `verdicts.tsv` and `candidates.verdicts.tsv`, and a `README.md` of the findings: what
   each verdict was and why, which flags were right, where the viewer helped and where it did not.
 * Not in: the CRAMs, the reference, the kraken2 database, the informative BAM, any local path (the commands
-  above take the files from the working directory; the Analysis-side runbooks hold the site's paths).
+  above take the files from the working directory; the analysis' own runbooks hold the site's paths).
 * The reads are public (1000 Genomes, open access) and the sample IDs are public identifiers; nothing from a
   controlled-access cohort is ever written here.
 

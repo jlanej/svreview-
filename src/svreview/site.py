@@ -36,7 +36,8 @@ def convert_member(src, dst, ref=None, dk_names=None):
     ``(name, read_number)``) get ``dk:i:1``. Returns ``(records, tagged)``."""
     n = tagged = 0
     with review_set.open_alignments(src, ref) as f:
-        with pysam.AlignmentFile(dst + ".tmp", "wb", template=f) as o:
+        header = pysam.AlignmentHeader.from_dict(bundle.clean_header(f.header.to_dict()))
+        with pysam.AlignmentFile(dst + ".tmp", "wb", header=header) as o:
             for r in f:
                 if dk_names is not None:
                     which = 1 if r.is_read1 else (2 if r.is_read2 else 0)
@@ -111,7 +112,10 @@ def build_site_from_set(rs, out, ref=None, title=None, with_viewer=False, viewer
     manifest["format"] = review_set.FORMAT_VERSION
     manifest["title"] = title or rs.title or os.path.basename(rs.path or os.path.dirname(rs.candidates_path)) or "svreview"
     manifest["created"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    manifest["source"] = collections.OrderedDict(set=rs.path, candidates=rs.candidates_path, bundles=rs.bundles_dir)
+    # names only, never paths: a manifest is published with the site
+    manifest["source"] = collections.OrderedDict(
+        set=os.path.basename(rs.path) if rs.path else None, candidates=os.path.basename(rs.candidates_path),
+        bundles=os.path.basename(rs.bundles_dir) if rs.bundles_dir else None)
     manifest["columns"] = rs.header
     manifest["trios"] = collections.OrderedDict()
     manifest["candidates"] = []

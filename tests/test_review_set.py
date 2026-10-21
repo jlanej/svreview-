@@ -53,7 +53,7 @@ def normal_pairs(role, chrom="chr1"):
 
 @pytest.fixture
 def trio_set(tmp_path):
-    """A set with per-trio alignments and no bundles/: the GMKF arm's way."""
+    """A set with per-trio alignments and no bundles/: a cohort arm's way."""
     d = tmp_path / "set"
     (d / "runs").mkdir(parents=True)
     (d / "candidates.tsv").write_text(CANDIDATES)
@@ -118,6 +118,8 @@ def test_per_trio_alignments_set(trio_set):
     assert "child:d3" in names and "child:chr1:n1000" in names
     assert "child:chr1:n4500" not in names and "child:chr2:n1000" not in names   # the windows, not the whole file
     assert sorted({r.query_name for r in records if r.has_tag("dk")}) == ["child:d0", "child:d1"]
+    from svreview import bundle
+    assert bundle.header_paths(os.path.join(out, "T1", "chr1_950_1050", "child.bam")) == []
     assert os.path.isfile(os.path.join(out, "trios.tsv"))
 
 
@@ -169,9 +171,16 @@ def test_shipped_example_set(tmp_path):
     assert not [f for f in findings if f.level == "error"], review_set.format_findings(findings)[0]
     assert len(rs.candidates) == 10 and set(c.review_tier for c in rs.candidates) == {1, 3, 4}
     assert rs.trios["sv_demo"].metrics.endswith("runs/sv_demo.metrics.json")
-    # CRAM bundles with the reference embedded: they open with no FASTA
+    # CRAM bundles with the reference embedded: they open with no FASTA; no header names a file path
+    from svreview import bundle
     kind, src = rs.source_of(rs.candidates[0])
     assert kind == "bundle" and contract.bundle_members(src)["child"].endswith("child.cram")
+    for c in rs.candidates:
+        _kind, d = rs.source_of(c)
+        for member in contract.bundle_members(d).values():
+            assert bundle.header_paths(member) == [], member
+    assert bundle.header_paths(rs.trios["sv_demo"].informative) == []
+    assert not any(f.level == "warning" for f in findings), findings
     m = site.build_site_from_set(rs, str(tmp_path / "site"), log=lambda *a: None)
     demo = os.path.join(HERE, os.pardir, "docs", "demo", "manifest.json")
     if os.path.isfile(demo):

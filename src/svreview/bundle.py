@@ -44,6 +44,56 @@ def _open(path, ref=None):
     return pysam.AlignmentFile(path, mode, **kw)
 
 
+def clean_header(header):
+    """A header dict (``AlignmentFile.header.to_dict()``) with every file path taken out: the ``UR`` of each
+    ``@SQ`` (the reference is embedded or named elsewhere) and the ``CL`` of each ``@PG`` (a command line
+    says where a file was cut). A bundle is published; its header must say nothing about the machine."""
+    out = dict(header)
+    out["SQ"] = [dict((k, v) for k, v in sq.items() if k != "UR") for sq in header.get("SQ", [])]
+    out["PG"] = [dict((k, v) for k, v in pg.items() if k != "CL") for pg in header.get("PG", [])]
+    if "CO" in header:
+        out["CO"] = [c for c in header["CO"] if not any(t.startswith(("/", "~")) for t in str(c).split())]
+    return out
+
+
+def header_paths(path, ref=None):
+    """The header fields of an alignment file that look like file paths: ``[(line, field)]``, empty when clean."""
+    with _open(path, ref) as f:
+        text = str(f.header)
+    hits = []
+    for line in text.splitlines():
+        for field in line.split("\t")[1:]:
+            value = field.split(":", 1)[1] if ":" in field else field
+            if value.startswith(("/", "~")) or " /" in value or " ~" in value or "UR:" == field[:3] or "CL:" == field[:3]:
+                hits.append((line.split("\t")[0], field))
+    return hits
+
+
+def clean_copy(src, dst, ref=None):
+    """*src* (BAM or CRAM) copied to a BAM at *dst* with a cleaned header, indexed; returns the record count."""
+    n = 0
+    with _open(src, ref) as f:
+        header = pysam.AlignmentHeader.from_dict(clean_header(f.header.to_dict()))
+        with pysam.AlignmentFile(dst + ".tmp", "wb", header=header) as o:
+            for r in f.fetch(until_eof=True):
+                o.write(r)
+                n += 1
+    os.replace(dst + ".tmp", dst)
+    pysam.index(dst)
+    return n
+
+
+def reheader_in_place(path, header):
+    """Rewrite *path*'s header in place with *header* (a dict): what the CRAM encoder adds (``UR``) comes out."""
+    hdr = path + ".header.sam"
+    with open(hdr, "w") as fh:
+        fh.write(str(pysam.AlignmentHeader.from_dict(header)))
+    try:
+        pysam.reheader("--no-PG", "-i", hdr, path, catch_stdout=False)
+    finally:
+        os.remove(hdr)
+
+
 def contig_lengths(path, ref=None):
     with _open(path, ref) as f:
         return collections.OrderedDict(zip(f.references, f.lengths))
@@ -63,7 +113,8 @@ def cut_member(src, out, windows, ref=None, threads=1, dk_names=None, cram=False
         o.write(r)
 
     with _open(src, ref) as f:
-        with pysam.AlignmentFile(tmp, "wb", template=f) as o:
+        header = clean_header(f.header.to_dict())
+        with pysam.AlignmentFile(tmp, "wb", header=pysam.AlignmentHeader.from_dict(header)) as o:
             seen = set()
             mates = []
             for chrom, start, end in windows:
@@ -100,12 +151,17 @@ def cut_member(src, out, windows, ref=None, threads=1, dk_names=None, cram=False
         if not ref:
             raise contract.ContractError("a CRAM bundle needs the reference (--ref) to embed")
         sorted_bam = out + ".sorted.bam"
-        pysam.sort("-@", str(max(1, threads)), "-o", sorted_bam, tmp)
+        pysam.sort("--no-PG", "-@", str(max(1, threads)), "-o", sorted_bam, tmp)
         os.remove(tmp)
-        pysam.view("-C", "-T", ref, "--output-fmt-option", "embed_ref=1", "-o", out, sorted_bam, catch_stdout=False)
+        with pysam.AlignmentFile(sorted_bam, "rb") as f:
+            with pysam.AlignmentFile(out, "wc", header=pysam.AlignmentHeader.from_dict(header), reference_filename=ref,
+                                     format_options=[b"embed_ref=1"]) as o:
+                for r in f.fetch(until_eof=True):
+                    o.write(r)
         os.remove(sorted_bam)
+        reheader_in_place(out, header)          # the encoder wrote the reference's path into @SQ UR
     else:
-        pysam.sort("-@", str(max(1, threads)), "-o", out, tmp)
+        pysam.sort("--no-PG", "-@", str(max(1, threads)), "-o", out, tmp)
         os.remove(tmp)
     pysam.index(out)
     return n
@@ -166,7 +222,8 @@ def bundle_candidates(candidates, members, out_dir, pad=10000, ref=None, samples
                     os.remove(stale)
             n = cut_member(members[role], out, entry["windows"], ref, threads, cram=cram)
             info = collections.OrderedDict()
-            info["member"], info["sample"], info["source"], info["source_url"] = role, names[role], "local", members[role]
+            # the source by its name only: a bundle travels, and a path says where it was cut
+            info["member"], info["sample"], info["source"], info["source_url"] = role, names[role], "local", os.path.basename(members[role])
             info["regions"] = [contract.region_str(c, s + 1, e) for c, s, e in entry["windows"]]
             info["reads"], info["bytes"] = n, os.path.getsize(out)
             info["fetched"] = now()

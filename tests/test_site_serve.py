@@ -241,3 +241,37 @@ def test_cli_round_trip(run, capsys):
     assert "1 bundles" in captured.out and "1 of 2 rows" in captured.out
     with pytest.raises(SystemExit):
         cli.main(["verdicts", "--verdicts", verdicts, "--out", merged])      # --out without --candidates
+
+
+def test_written_alignments_carry_no_paths(run, tmp_path):
+    """Nothing svreview writes - a BAM or CRAM bundle, a site's BAM, a cut from per-trio files, a cleaned copy -
+    carries a file path in its header (no @SQ UR, no @PG CL): the files are published."""
+    _h, cands = contract.read_candidates(run["table"])
+    # the sources carry paths: samtools sort's command line, and a CRAM written with -T carries the reference's
+    ref = os.path.join(run["dir"], "ref.fa")
+    with open(ref, "w") as fh:
+        fh.write(">chr1\n" + "A" * REF_LEN + "\n>chr2\n" + "C" * REF_LEN + "\n")
+    pysam.faidx(ref)
+    assert any(f == "CL:samtools sort -o %s %s.unsorted" % (run["paths"]["child"], run["paths"]["child"]) or f.startswith("CL:")
+               for _l, f in bundle.header_paths(run["paths"]["child"]))
+    for cram in (False, True):
+        out = os.path.join(run["dir"], "review_%s" % ("cram" if cram else "bam"))
+        bundle.bundle_candidates(cands, run["paths"], out, pad=300, ref=ref, cram=cram, log=lambda *a: None)
+        for role in contract.ROLES:
+            member = os.path.join(out, "TRIO", "chr1_950_1050", role + (".cram" if cram else ".bam"))
+            assert bundle.header_paths(member) == [], member
+            with open(os.path.join(out, "TRIO", "chr1_950_1050", role + ".json")) as fh:
+                assert json.load(fh)["source_url"] == role + ".bam"
+        if cram:
+            with pysam.AlignmentFile(os.path.join(out, "TRIO", "chr1_950_1050", "child.cram"), "rc") as f:   # no reference
+                assert sum(1 for _ in f.fetch("chr1", 650, 1350)) > 0
+        site_dir = os.path.join(run["dir"], "site_%s" % ("cram" if cram else "bam"))
+        m = site.build_site(run["table"], out, site_dir, informative={"*": run["informative"]}, log=lambda *a: None)
+        assert m["source"] == {"set": None, "candidates": "candidates.tsv", "bundles": os.path.basename(out)}
+        for role in contract.ROLES:
+            assert bundle.header_paths(os.path.join(site_dir, "TRIO", "chr1_950_1050", role + ".bam")) == []
+    cleaned = os.path.join(run["dir"], "informative.clean.bam")
+    bundle.clean_copy(run["informative"], cleaned)
+    assert bundle.header_paths(cleaned) == [] and os.path.isfile(cleaned + ".bai")
+    with pysam.AlignmentFile(cleaned) as f:
+        assert sum(1 for _ in f.fetch(until_eof=True)) == 6

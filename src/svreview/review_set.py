@@ -294,6 +294,12 @@ class ReviewSet(object):
                         for chrom, s, e in windows:
                             if chrom not in lengths:
                                 err(c.id, "%s: window contig %s is not in the file" % (role, chrom))
+                        if kind == "bundle":
+                            from . import bundle as _bundle
+                            hits = _bundle.header_paths(p, self.reference_of(c))
+                            if hits:
+                                warn(c.id, "%s's header carries file paths (%s): strip them before the set is shared"
+                                     % (role, ", ".join(sorted(set(h[1][:2] if ":" in h[1] else h[1] for h in hits)))))
                         if role == "child":
                             with open_alignments(p, self.reference_of(c)) as f:
                                 n = sum(1 for chrom, s, e in windows if chrom in lengths for _ in f.fetch(chrom, s, e))
