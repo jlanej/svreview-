@@ -1,0 +1,2203 @@
+{
+ "svreview": "0.1.0",
+ "contract": 1,
+ "format": 1,
+ "title": "the sv_demo trio (kmer_denovo_filter examples/sv_demo)",
+ "created": "2026-10-21 13:03:30",
+ "source": {
+  "set": "sv_demo_review",
+  "candidates": "candidates.tsv",
+  "bundles": "bundles"
+ },
+ "columns": [
+  "chrom",
+  "start",
+  "end",
+  "trio",
+  "class",
+  "sv_type",
+  "reads",
+  "unique_kmers",
+  "split_reads",
+  "discordant_pairs",
+  "unmapped_mates",
+  "breakpoint_reads",
+  "large_indel_reads",
+  "max_clip_len",
+  "max_mapq",
+  "mapq0_reads",
+  "n_trios_at_locus",
+  "junctions",
+  "locus_flags",
+  "partner_flags",
+  "partner_recurrent",
+  "partner_multiplicity",
+  "both_ends",
+  "rank",
+  "nhf_reads",
+  "nhf",
+  "prior_recurrence",
+  "flags",
+  "review_tier"
+ ],
+ "trios": {
+  "sv_demo": {
+   "members": {
+    "child": "child",
+    "father": "father",
+    "mother": "mother"
+   },
+   "child_sex": "0",
+   "nhf": {
+    "status": "screened",
+    "reason": "",
+    "db": "/data/k2",
+    "sampled": {
+     "total": 143,
+     "nonhuman": 0.0979,
+     "bacterial": 0.0979,
+     "archaeal": 0.0,
+     "fungal": 0.0,
+     "protist": 0.0,
+     "viral": 0.0,
+     "univec_core": 0.0,
+     "human_lineage": 0.9021,
+     "unclassified": 0.0
+    },
+    "regions_screened": 10
+   },
+   "informative_bam": true
+  }
+ },
+ "candidates": [
+  {
+   "id": "sv_demo/chr1_9860_10000",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 9860,
+   "end": 10000,
+   "class": "SV",
+   "sv_type": "DEL",
+   "evidence": {
+    "reads": 11,
+    "unique_kmers": 28,
+    "split_reads": 6,
+    "discordant_pairs": 4,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 8,
+    "large_indel_reads": 0,
+    "max_clip_len": 72,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 12000,
+     "end": 12140,
+     "strands": "+-",
+     "sv_type": "DEL",
+     "reads": 15
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 7,
+   "both_ends": 1,
+   "nhf_reads": 11,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "9860",
+    "end": "10000",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "DEL",
+    "reads": "11",
+    "unique_kmers": "28",
+    "split_reads": "6",
+    "discordant_pairs": "4",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "8",
+    "large_indel_reads": "0",
+    "max_clip_len": "72",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:12000-12140|+-|DEL|15",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "1",
+    "both_ends": "1",
+    "rank": "7",
+    "nhf_reads": "11",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 9860,
+     "end": 10000,
+     "own": true,
+     "size": 140,
+     "reads": 11,
+     "unique_kmers": 28,
+     "split_reads": 6,
+     "discordant_pairs": 4,
+     "max_clip_len": 72,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 8,
+     "large_indel_reads": 0,
+     "sv_type": "DEL",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 11,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 11,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 11,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 12000,
+     "end": 12140,
+     "own": false,
+     "size": 140,
+     "reads": 8,
+     "unique_kmers": 28,
+     "split_reads": 7,
+     "discordant_pairs": 3,
+     "max_clip_len": 54,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 7,
+     "large_indel_reads": 0,
+     "sv_type": "DEL",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 8,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 8,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 8,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 9160,
+     "end": 10700
+    },
+    {
+     "chrom": "chr1",
+     "start": 11300,
+     "end": 12840
+    }
+   ],
+   "bundle": "sv_demo/chr1_9860_10000",
+   "shared_with": null,
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:9860-10000",
+    "chrom": "chr1",
+    "start": 9860,
+    "end": 10000,
+    "sv_type": "DEL",
+    "review_tier": 1,
+    "rank": 7,
+    "windows": [
+     "chr1:9161-10700",
+     "chr1:11301-12840"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr1:12000-12140",
+      "name": "chr1_12000_12140",
+      "sv_type": "DEL",
+      "review_tier": 1,
+      "rank": 8
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_9860_10000/child.bam",
+     "reads": 561,
+     "bytes": 16002,
+     "informative": 32
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_9860_10000/father.bam",
+     "reads": 750,
+     "bytes": 18814,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_9860_10000/mother.bam",
+     "reads": 750,
+     "bytes": 18712,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr1_12000_12140",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 12000,
+   "end": 12140,
+   "class": "SV",
+   "sv_type": "DEL",
+   "evidence": {
+    "reads": 8,
+    "unique_kmers": 28,
+    "split_reads": 7,
+    "discordant_pairs": 3,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 7,
+    "large_indel_reads": 0,
+    "max_clip_len": 54,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 9860,
+     "end": 10000,
+     "strands": "+-",
+     "sv_type": "DEL",
+     "reads": 15
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 8,
+   "both_ends": 1,
+   "nhf_reads": 8,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "12000",
+    "end": "12140",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "DEL",
+    "reads": "8",
+    "unique_kmers": "28",
+    "split_reads": "7",
+    "discordant_pairs": "3",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "7",
+    "large_indel_reads": "0",
+    "max_clip_len": "54",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:9860-10000|+-|DEL|15",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "1",
+    "both_ends": "1",
+    "rank": "8",
+    "nhf_reads": "8",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 12000,
+     "end": 12140,
+     "own": true,
+     "size": 140,
+     "reads": 8,
+     "unique_kmers": 28,
+     "split_reads": 7,
+     "discordant_pairs": 3,
+     "max_clip_len": 54,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 7,
+     "large_indel_reads": 0,
+     "sv_type": "DEL",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 8,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 8,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 8,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 9860,
+     "end": 10000,
+     "own": false,
+     "size": 140,
+     "reads": 11,
+     "unique_kmers": 28,
+     "split_reads": 6,
+     "discordant_pairs": 4,
+     "max_clip_len": 72,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 8,
+     "large_indel_reads": 0,
+     "sv_type": "DEL",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 11,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 11,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 11,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 9160,
+     "end": 10700
+    },
+    {
+     "chrom": "chr1",
+     "start": 11300,
+     "end": 12840
+    }
+   ],
+   "bundle": "sv_demo/chr1_9860_10000",
+   "shared_with": "chr1:9860-10000",
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:9860-10000",
+    "chrom": "chr1",
+    "start": 9860,
+    "end": 10000,
+    "sv_type": "DEL",
+    "review_tier": 1,
+    "rank": 7,
+    "windows": [
+     "chr1:9161-10700",
+     "chr1:11301-12840"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr1:12000-12140",
+      "name": "chr1_12000_12140",
+      "sv_type": "DEL",
+      "review_tier": 1,
+      "rank": 8
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_9860_10000/child.bam",
+     "reads": 561,
+     "bytes": 16002,
+     "informative": 32
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_9860_10000/father.bam",
+     "reads": 750,
+     "bytes": 18814,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_9860_10000/mother.bam",
+     "reads": 750,
+     "bytes": 18712,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr1_25000_25131",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 25000,
+   "end": 25131,
+   "class": "SV",
+   "sv_type": "DUP",
+   "evidence": {
+    "reads": 10,
+    "unique_kmers": 30,
+    "split_reads": 7,
+    "discordant_pairs": 4,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 9,
+    "large_indel_reads": 0,
+    "max_clip_len": 73,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 26358,
+     "end": 26500,
+     "strands": "-+",
+     "sv_type": "DUP",
+     "reads": 18
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 4,
+   "both_ends": 1,
+   "nhf_reads": 10,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "25000",
+    "end": "25131",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "DUP",
+    "reads": "10",
+    "unique_kmers": "30",
+    "split_reads": "7",
+    "discordant_pairs": "4",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "9",
+    "large_indel_reads": "0",
+    "max_clip_len": "73",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:26358-26500|-+|DUP|18",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "1",
+    "both_ends": "1",
+    "rank": "4",
+    "nhf_reads": "10",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 25000,
+     "end": 25131,
+     "own": true,
+     "size": 131,
+     "reads": 10,
+     "unique_kmers": 30,
+     "split_reads": 7,
+     "discordant_pairs": 4,
+     "max_clip_len": 73,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 9,
+     "large_indel_reads": 0,
+     "sv_type": "DUP",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 10,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 10,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 10,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 26358,
+     "end": 26500,
+     "own": false,
+     "size": 142,
+     "reads": 10,
+     "unique_kmers": 30,
+     "split_reads": 7,
+     "discordant_pairs": 6,
+     "max_clip_len": 73,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 8,
+     "large_indel_reads": 0,
+     "sv_type": "DUP",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 10,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 10,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 10,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 24300,
+     "end": 27200
+    }
+   ],
+   "bundle": "sv_demo/chr1_25000_25131",
+   "shared_with": null,
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:25000-25131",
+    "chrom": "chr1",
+    "start": 25000,
+    "end": 25131,
+    "sv_type": "DUP",
+    "review_tier": 1,
+    "rank": 4,
+    "windows": [
+     "chr1:24301-27200"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr1:26358-26500",
+      "name": "chr1_26358_26500",
+      "sv_type": "DUP",
+      "review_tier": 1,
+      "rank": 6
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_25000_25131/child.bam",
+     "reads": 858,
+     "bytes": 22050,
+     "informative": 34
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_25000_25131/father.bam",
+     "reads": 678,
+     "bytes": 16883,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_25000_25131/mother.bam",
+     "reads": 698,
+     "bytes": 17092,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr1_26358_26500",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 26358,
+   "end": 26500,
+   "class": "SV",
+   "sv_type": "DUP",
+   "evidence": {
+    "reads": 10,
+    "unique_kmers": 30,
+    "split_reads": 7,
+    "discordant_pairs": 6,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 8,
+    "large_indel_reads": 0,
+    "max_clip_len": 73,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 25000,
+     "end": 25131,
+     "strands": "-+",
+     "sv_type": "DUP",
+     "reads": 18
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 6,
+   "both_ends": 1,
+   "nhf_reads": 10,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "26358",
+    "end": "26500",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "DUP",
+    "reads": "10",
+    "unique_kmers": "30",
+    "split_reads": "7",
+    "discordant_pairs": "6",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "8",
+    "large_indel_reads": "0",
+    "max_clip_len": "73",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:25000-25131|-+|DUP|18",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "1",
+    "both_ends": "1",
+    "rank": "6",
+    "nhf_reads": "10",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 26358,
+     "end": 26500,
+     "own": true,
+     "size": 142,
+     "reads": 10,
+     "unique_kmers": 30,
+     "split_reads": 7,
+     "discordant_pairs": 6,
+     "max_clip_len": 73,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 8,
+     "large_indel_reads": 0,
+     "sv_type": "DUP",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 10,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 10,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 10,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 25000,
+     "end": 25131,
+     "own": false,
+     "size": 131,
+     "reads": 10,
+     "unique_kmers": 30,
+     "split_reads": 7,
+     "discordant_pairs": 4,
+     "max_clip_len": 73,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 9,
+     "large_indel_reads": 0,
+     "sv_type": "DUP",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 10,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 10,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 10,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 24300,
+     "end": 27200
+    }
+   ],
+   "bundle": "sv_demo/chr1_25000_25131",
+   "shared_with": "chr1:25000-25131",
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:25000-25131",
+    "chrom": "chr1",
+    "start": 25000,
+    "end": 25131,
+    "sv_type": "DUP",
+    "review_tier": 1,
+    "rank": 4,
+    "windows": [
+     "chr1:24301-27200"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr1:26358-26500",
+      "name": "chr1_26358_26500",
+      "sv_type": "DUP",
+      "review_tier": 1,
+      "rank": 6
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_25000_25131/child.bam",
+     "reads": 858,
+     "bytes": 22050,
+     "informative": 34
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_25000_25131/father.bam",
+     "reads": 678,
+     "bytes": 16883,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_25000_25131/mother.bam",
+     "reads": 698,
+     "bytes": 17092,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr1_39870_40141",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 39870,
+   "end": 40141,
+   "class": "SV",
+   "sv_type": "INV",
+   "evidence": {
+    "reads": 13,
+    "unique_kmers": 59,
+    "split_reads": 9,
+    "discordant_pairs": 6,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 12,
+    "large_indel_reads": 0,
+    "max_clip_len": 71,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 41890,
+     "end": 42133,
+     "strands": "++",
+     "sv_type": "INV",
+     "reads": 13
+    },
+    {
+     "chrom": "chr1",
+     "start": 41890,
+     "end": 42133,
+     "strands": "--",
+     "sv_type": "INV",
+     "reads": 7
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 1,
+   "both_ends": 1,
+   "nhf_reads": 13,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "39870",
+    "end": "40141",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "INV",
+    "reads": "13",
+    "unique_kmers": "59",
+    "split_reads": "9",
+    "discordant_pairs": "6",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "12",
+    "large_indel_reads": "0",
+    "max_clip_len": "71",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:41890-42133|++|INV|13;chr1:41890-42133|--|INV|7",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "2",
+    "both_ends": "1",
+    "rank": "1",
+    "nhf_reads": "13",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 39870,
+     "end": 40141,
+     "own": true,
+     "size": 271,
+     "reads": 13,
+     "unique_kmers": 59,
+     "split_reads": 9,
+     "discordant_pairs": 6,
+     "max_clip_len": 71,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 12,
+     "large_indel_reads": 0,
+     "sv_type": "INV",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 13,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 13,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 13,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 41890,
+     "end": 42133,
+     "own": false,
+     "size": 243,
+     "reads": 11,
+     "unique_kmers": 59,
+     "split_reads": 9,
+     "discordant_pairs": 5,
+     "max_clip_len": 74,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 10,
+     "large_indel_reads": 0,
+     "sv_type": "INV",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 11,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 11,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 11,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 39170,
+     "end": 40841
+    },
+    {
+     "chrom": "chr1",
+     "start": 41190,
+     "end": 42833
+    }
+   ],
+   "bundle": "sv_demo/chr1_39870_40141",
+   "shared_with": null,
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:39870-40141",
+    "chrom": "chr1",
+    "start": 39870,
+    "end": 40141,
+    "sv_type": "INV",
+    "review_tier": 1,
+    "rank": 1,
+    "windows": [
+     "chr1:39171-40841",
+     "chr1:41191-42833"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr1:41890-42133",
+      "name": "chr1_41890_42133",
+      "sv_type": "INV",
+      "review_tier": 1,
+      "rank": 2
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_39870_40141/child.bam",
+     "reads": 764,
+     "bytes": 21380,
+     "informative": 42
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_39870_40141/father.bam",
+     "reads": 774,
+     "bytes": 19241,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_39870_40141/mother.bam",
+     "reads": 760,
+     "bytes": 18946,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr1_41890_42133",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 41890,
+   "end": 42133,
+   "class": "SV",
+   "sv_type": "INV",
+   "evidence": {
+    "reads": 11,
+    "unique_kmers": 59,
+    "split_reads": 9,
+    "discordant_pairs": 5,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 10,
+    "large_indel_reads": 0,
+    "max_clip_len": 74,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 39870,
+     "end": 40141,
+     "strands": "++",
+     "sv_type": "INV",
+     "reads": 13
+    },
+    {
+     "chrom": "chr1",
+     "start": 39870,
+     "end": 40141,
+     "strands": "--",
+     "sv_type": "INV",
+     "reads": 7
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 2,
+   "both_ends": 1,
+   "nhf_reads": 11,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "41890",
+    "end": "42133",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "INV",
+    "reads": "11",
+    "unique_kmers": "59",
+    "split_reads": "9",
+    "discordant_pairs": "5",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "10",
+    "large_indel_reads": "0",
+    "max_clip_len": "74",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:39870-40141|++|INV|13;chr1:39870-40141|--|INV|7",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "2",
+    "both_ends": "1",
+    "rank": "2",
+    "nhf_reads": "11",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 41890,
+     "end": 42133,
+     "own": true,
+     "size": 243,
+     "reads": 11,
+     "unique_kmers": 59,
+     "split_reads": 9,
+     "discordant_pairs": 5,
+     "max_clip_len": 74,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 10,
+     "large_indel_reads": 0,
+     "sv_type": "INV",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 11,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 11,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 11,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 39870,
+     "end": 40141,
+     "own": false,
+     "size": 271,
+     "reads": 13,
+     "unique_kmers": 59,
+     "split_reads": 9,
+     "discordant_pairs": 6,
+     "max_clip_len": 71,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 12,
+     "large_indel_reads": 0,
+     "sv_type": "INV",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 13,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 13,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 13,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 39170,
+     "end": 40841
+    },
+    {
+     "chrom": "chr1",
+     "start": 41190,
+     "end": 42833
+    }
+   ],
+   "bundle": "sv_demo/chr1_39870_40141",
+   "shared_with": "chr1:39870-40141",
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:39870-40141",
+    "chrom": "chr1",
+    "start": 39870,
+    "end": 40141,
+    "sv_type": "INV",
+    "review_tier": 1,
+    "rank": 1,
+    "windows": [
+     "chr1:39171-40841",
+     "chr1:41191-42833"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr1:41890-42133",
+      "name": "chr1_41890_42133",
+      "sv_type": "INV",
+      "review_tier": 1,
+      "rank": 2
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_39870_40141/child.bam",
+     "reads": 764,
+     "bytes": 21380,
+     "informative": 42
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_39870_40141/father.bam",
+     "reads": 774,
+     "bytes": 19241,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_39870_40141/mother.bam",
+     "reads": 760,
+     "bytes": 18946,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr1_54860_55115",
+   "trio": "sv_demo",
+   "chrom": "chr1",
+   "start": 54860,
+   "end": 55115,
+   "class": "SV",
+   "sv_type": "BND",
+   "evidence": {
+    "reads": 11,
+    "unique_kmers": 60,
+    "split_reads": 8,
+    "discordant_pairs": 5,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 9,
+    "large_indel_reads": 0,
+    "max_clip_len": 73,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr2",
+     "start": 14861,
+     "end": 15141,
+     "strands": "+-",
+     "sv_type": "BND",
+     "reads": 10
+    },
+    {
+     "chrom": "chr2",
+     "start": 14861,
+     "end": 15141,
+     "strands": "-+",
+     "sv_type": "BND",
+     "reads": 8
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 5,
+   "both_ends": 1,
+   "nhf_reads": 11,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr1",
+    "start": "54860",
+    "end": "55115",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "BND",
+    "reads": "11",
+    "unique_kmers": "60",
+    "split_reads": "8",
+    "discordant_pairs": "5",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "9",
+    "large_indel_reads": "0",
+    "max_clip_len": "73",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr2:14861-15141|+-|BND|10;chr2:14861-15141|-+|BND|8",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "2",
+    "both_ends": "1",
+    "rank": "5",
+    "nhf_reads": "11",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr1",
+     "start": 54860,
+     "end": 55115,
+     "own": true,
+     "size": 255,
+     "reads": 11,
+     "unique_kmers": 60,
+     "split_reads": 8,
+     "discordant_pairs": 5,
+     "max_clip_len": 73,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 9,
+     "large_indel_reads": 0,
+     "sv_type": "BND",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 11,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 11,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 11,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr2",
+     "start": 14861,
+     "end": 15141,
+     "own": false,
+     "size": 280,
+     "reads": 12,
+     "unique_kmers": 60,
+     "split_reads": 6,
+     "discordant_pairs": 6,
+     "max_clip_len": 72,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 10,
+     "large_indel_reads": 0,
+     "sv_type": "BND",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 12,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 12,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 12,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 54160,
+     "end": 55815
+    },
+    {
+     "chrom": "chr2",
+     "start": 14161,
+     "end": 15841
+    }
+   ],
+   "bundle": "sv_demo/chr1_54860_55115",
+   "shared_with": null,
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:54860-55115",
+    "chrom": "chr1",
+    "start": 54860,
+    "end": 55115,
+    "sv_type": "BND",
+    "review_tier": 1,
+    "rank": 5,
+    "windows": [
+     "chr1:54161-55815",
+     "chr2:14162-15841"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr2:14861-15141",
+      "name": "chr2_14861_15141",
+      "sv_type": "BND",
+      "review_tier": 1,
+      "rank": 3
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_54860_55115/child.bam",
+     "reads": 814,
+     "bytes": 22487,
+     "informative": 37
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_54860_55115/father.bam",
+     "reads": 702,
+     "bytes": 18244,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_54860_55115/mother.bam",
+     "reads": 772,
+     "bytes": 19642,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr2_9858_10132",
+   "trio": "sv_demo",
+   "chrom": "chr2",
+   "start": 9858,
+   "end": 10132,
+   "class": "SV",
+   "sv_type": "INS",
+   "evidence": {
+    "reads": 23,
+    "unique_kmers": 85,
+    "split_reads": 0,
+    "discordant_pairs": 0,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 12,
+    "large_indel_reads": 7,
+    "max_clip_len": 72,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 3,
+   "rank": 9,
+   "both_ends": 0,
+   "nhf_reads": 23,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr2",
+    "start": "9858",
+    "end": "10132",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "INS",
+    "reads": "23",
+    "unique_kmers": "85",
+    "split_reads": "0",
+    "discordant_pairs": "0",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "12",
+    "large_indel_reads": "7",
+    "max_clip_len": "72",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": ".",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "0",
+    "both_ends": "0",
+    "rank": "9",
+    "nhf_reads": "23",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "3"
+   },
+   "regions": [
+    {
+     "chrom": "chr2",
+     "start": 9858,
+     "end": 10132,
+     "own": true,
+     "size": 274,
+     "reads": 23,
+     "unique_kmers": 85,
+     "split_reads": 0,
+     "discordant_pairs": 0,
+     "max_clip_len": 72,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 12,
+     "large_indel_reads": 7,
+     "sv_type": "INS",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 23,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 23,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 23,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr2",
+     "start": 9158,
+     "end": 10832
+    }
+   ],
+   "bundle": "sv_demo/chr2_9858_10132",
+   "shared_with": null,
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr2:9858-10132",
+    "chrom": "chr2",
+    "start": 9858,
+    "end": 10132,
+    "sv_type": "INS",
+    "review_tier": 3,
+    "rank": 9,
+    "windows": [
+     "chr2:9159-10832"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr2_9858_10132/child.bam",
+     "reads": 408,
+     "bytes": 11300,
+     "informative": 23
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr2_9858_10132/father.bam",
+     "reads": 378,
+     "bytes": 9693,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr2_9858_10132/mother.bam",
+     "reads": 398,
+     "bytes": 9971,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr2_14861_15141",
+   "trio": "sv_demo",
+   "chrom": "chr2",
+   "start": 14861,
+   "end": 15141,
+   "class": "SV",
+   "sv_type": "BND",
+   "evidence": {
+    "reads": 12,
+    "unique_kmers": 60,
+    "split_reads": 6,
+    "discordant_pairs": 6,
+    "unmapped_mates": 0,
+    "breakpoint_reads": 10,
+    "large_indel_reads": 0,
+    "max_clip_len": 72,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [
+    {
+     "chrom": "chr1",
+     "start": 54860,
+     "end": 55115,
+     "strands": "+-",
+     "sv_type": "BND",
+     "reads": 10
+    },
+    {
+     "chrom": "chr1",
+     "start": 54860,
+     "end": 55115,
+     "strands": "-+",
+     "sv_type": "BND",
+     "reads": 8
+    }
+   ],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [],
+   "review_tier": 1,
+   "rank": 3,
+   "both_ends": 1,
+   "nhf_reads": 12,
+   "nhf": 0.0,
+   "row": {
+    "chrom": "chr2",
+    "start": "14861",
+    "end": "15141",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "BND",
+    "reads": "12",
+    "unique_kmers": "60",
+    "split_reads": "6",
+    "discordant_pairs": "6",
+    "unmapped_mates": "0",
+    "breakpoint_reads": "10",
+    "large_indel_reads": "0",
+    "max_clip_len": "72",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": "chr1:54860-55115|+-|BND|10;chr1:54860-55115|-+|BND|8",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "2",
+    "both_ends": "1",
+    "rank": "3",
+    "nhf_reads": "12",
+    "nhf": "0.0",
+    "prior_recurrence": ".",
+    "flags": ".",
+    "review_tier": "1"
+   },
+   "regions": [
+    {
+     "chrom": "chr2",
+     "start": 14861,
+     "end": 15141,
+     "own": true,
+     "size": 280,
+     "reads": 12,
+     "unique_kmers": 60,
+     "split_reads": 6,
+     "discordant_pairs": 6,
+     "max_clip_len": 72,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 10,
+     "large_indel_reads": 0,
+     "sv_type": "BND",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 12,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 12,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 12,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    },
+    {
+     "chrom": "chr1",
+     "start": 54860,
+     "end": 55115,
+     "own": false,
+     "size": 255,
+     "reads": 11,
+     "unique_kmers": 60,
+     "split_reads": 8,
+     "discordant_pairs": 5,
+     "max_clip_len": 73,
+     "unmapped_mates": 0,
+     "breakpoint_reads": 9,
+     "large_indel_reads": 0,
+     "sv_type": "BND",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 11,
+     "nhf": 0.0,
+     "nhf_screen": {
+      "reads": 11,
+      "placed_unmapped": 0,
+      "fractions": {
+       "total": 11,
+       "nonhuman": 0.0,
+       "bacterial": 0.0,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 1.0,
+       "unclassified": 0.0
+      },
+      "top_taxon": "."
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr1",
+     "start": 54160,
+     "end": 55815
+    },
+    {
+     "chrom": "chr2",
+     "start": 14161,
+     "end": 15841
+    }
+   ],
+   "bundle": "sv_demo/chr1_54860_55115",
+   "shared_with": "chr1:54860-55115",
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr1:54860-55115",
+    "chrom": "chr1",
+    "start": 54860,
+    "end": 55115,
+    "sv_type": "BND",
+    "review_tier": 1,
+    "rank": 5,
+    "windows": [
+     "chr1:54161-55815",
+     "chr2:14162-15841"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [
+     {
+      "candidate": "chr2:14861-15141",
+      "name": "chr2_14861_15141",
+      "sv_type": "BND",
+      "review_tier": 1,
+      "rank": 3
+     }
+    ],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr1_54860_55115/child.bam",
+     "reads": 814,
+     "bytes": 22487,
+     "informative": 37
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr1_54860_55115/father.bam",
+     "reads": 702,
+     "bytes": 18244,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr1_54860_55115/mother.bam",
+     "reads": 772,
+     "bytes": 19642,
+     "informative": null
+    }
+   }
+  },
+  {
+   "id": "sv_demo/chr2_21866_22078",
+   "trio": "sv_demo",
+   "chrom": "chr2",
+   "start": 21866,
+   "end": 22078,
+   "class": "SV",
+   "sv_type": "INS",
+   "evidence": {
+    "reads": 10,
+    "unique_kmers": 211,
+    "split_reads": 0,
+    "discordant_pairs": 1,
+    "unmapped_mates": 7,
+    "breakpoint_reads": 9,
+    "large_indel_reads": 0,
+    "max_clip_len": 114,
+    "max_mapq": 60,
+    "mapq0_reads": 0
+   },
+   "junctions": [],
+   "locus_flags": [],
+   "partner_flags": [],
+   "flags": [
+    "nhf"
+   ],
+   "review_tier": 4,
+   "rank": 10,
+   "both_ends": 0,
+   "nhf_reads": 24,
+   "nhf": 0.5833,
+   "row": {
+    "chrom": "chr2",
+    "start": "21866",
+    "end": "22078",
+    "trio": "sv_demo",
+    "class": "SV",
+    "sv_type": "INS",
+    "reads": "10",
+    "unique_kmers": "211",
+    "split_reads": "0",
+    "discordant_pairs": "1",
+    "unmapped_mates": "7",
+    "breakpoint_reads": "9",
+    "large_indel_reads": "0",
+    "max_clip_len": "114",
+    "max_mapq": "60",
+    "mapq0_reads": "0",
+    "n_trios_at_locus": "1",
+    "junctions": ".",
+    "locus_flags": ".",
+    "partner_flags": ".",
+    "partner_recurrent": "0",
+    "partner_multiplicity": "0",
+    "both_ends": "0",
+    "rank": "10",
+    "nhf_reads": "24",
+    "nhf": "0.5833",
+    "prior_recurrence": ".",
+    "flags": "nhf",
+    "review_tier": "4"
+   },
+   "regions": [
+    {
+     "chrom": "chr2",
+     "start": 21866,
+     "end": 22078,
+     "own": true,
+     "size": 212,
+     "reads": 10,
+     "unique_kmers": 211,
+     "split_reads": 0,
+     "discordant_pairs": 1,
+     "max_clip_len": 114,
+     "unmapped_mates": 7,
+     "breakpoint_reads": 9,
+     "large_indel_reads": 0,
+     "sv_type": "INS",
+     "class": "SV",
+     "max_mapq": 60,
+     "mapq0_reads": 0,
+     "nhf_reads": 24,
+     "nhf": 0.5833,
+     "nhf_screen": {
+      "reads": 24,
+      "placed_unmapped": 14,
+      "fractions": {
+       "total": 24,
+       "nonhuman": 0.5833,
+       "bacterial": 0.5833,
+       "archaeal": 0.0,
+       "fungal": 0.0,
+       "protist": 0.0,
+       "viral": 0.0,
+       "univec_core": 0.0,
+       "human_lineage": 0.4167,
+       "unclassified": 0.0
+      },
+      "top_taxon": "Escherichia_coli(14)"
+     }
+    }
+   ],
+   "source": "bundle",
+   "windows": [
+    {
+     "chrom": "chr2",
+     "start": 21166,
+     "end": 22778
+    }
+   ],
+   "bundle": "sv_demo/chr2_21866_22078",
+   "shared_with": null,
+   "candidate_json": {
+    "trio": "sv_demo",
+    "candidate": "chr2:21866-22078",
+    "chrom": "chr2",
+    "start": 21866,
+    "end": 22078,
+    "sv_type": "INS",
+    "review_tier": 4,
+    "rank": 10,
+    "windows": [
+     "chr2:21167-22778"
+    ],
+    "skipped_windows": [],
+    "pad": 700,
+    "members": {
+     "child": "child",
+     "father": "father",
+     "mother": "mother"
+    },
+    "status": {
+     "child": "ok",
+     "father": "ok",
+     "mother": "ok"
+    },
+    "shared_by": [],
+    "written": "2026-10-21 13:03:30"
+   },
+   "members": {
+    "child": {
+     "sample": "child",
+     "bam": "sv_demo/chr2_21866_22078/child.bam",
+     "reads": 450,
+     "bytes": 12527,
+     "informative": 24
+    },
+    "father": {
+     "sample": "father",
+     "bam": "sv_demo/chr2_21866_22078/father.bam",
+     "reads": 402,
+     "bytes": 9947,
+     "informative": null
+    },
+    "mother": {
+     "sample": "mother",
+     "bam": "sv_demo/chr2_21866_22078/mother.bam",
+     "reads": 426,
+     "bytes": 10468,
+     "informative": null
+    }
+   }
+  }
+ ],
+ "summary": {
+  "candidates": 10,
+  "with_bundle": 10,
+  "tiers": {
+   "1": 8,
+   "3": 1,
+   "4": 1
+  }
+ }
+}

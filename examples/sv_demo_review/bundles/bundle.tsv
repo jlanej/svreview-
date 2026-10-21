@@ -1,0 +1,31 @@
+candidate	trio	sv_type	review_tier	rank	member	sample	region	reads	bytes	source_url	status	path
+chr1:39870-40141	sv_demo	INV	1	1	child	child	chr1:39171-40841,chr1:41191-42833	764	6120	child.bam	ok	sv_demo/chr1_39870_40141/child.cram
+chr1:39870-40141	sv_demo	INV	1	1	father	father	chr1:39171-40841,chr1:41191-42833	774	4732	father.bam	ok	sv_demo/chr1_39870_40141/father.cram
+chr1:39870-40141	sv_demo	INV	1	1	mother	mother	chr1:39171-40841,chr1:41191-42833	760	4699	mother.bam	ok	sv_demo/chr1_39870_40141/mother.cram
+chr1:41890-42133	sv_demo	INV	1	2	child	child	chr1:39171-40841,chr1:41191-42833	764	6120	child.bam	shared=chr1_39870_40141 ok	sv_demo/chr1_39870_40141/child.cram
+chr1:41890-42133	sv_demo	INV	1	2	father	father	chr1:39171-40841,chr1:41191-42833	774	4732	father.bam	shared=chr1_39870_40141 ok	sv_demo/chr1_39870_40141/father.cram
+chr1:41890-42133	sv_demo	INV	1	2	mother	mother	chr1:39171-40841,chr1:41191-42833	760	4699	mother.bam	shared=chr1_39870_40141 ok	sv_demo/chr1_39870_40141/mother.cram
+chr2:14861-15141	sv_demo	BND	1	3	child	child	chr1:54161-55815,chr2:14162-15841	814	7563	child.bam	shared=chr1_54860_55115 ok	sv_demo/chr1_54860_55115/child.cram
+chr2:14861-15141	sv_demo	BND	1	3	father	father	chr1:54161-55815,chr2:14162-15841	702	5638	father.bam	shared=chr1_54860_55115 ok	sv_demo/chr1_54860_55115/father.cram
+chr2:14861-15141	sv_demo	BND	1	3	mother	mother	chr1:54161-55815,chr2:14162-15841	772	5846	mother.bam	shared=chr1_54860_55115 ok	sv_demo/chr1_54860_55115/mother.cram
+chr1:25000-25131	sv_demo	DUP	1	4	child	child	chr1:24301-27200	858	5976	child.bam	ok	sv_demo/chr1_25000_25131/child.cram
+chr1:25000-25131	sv_demo	DUP	1	4	father	father	chr1:24301-27200	678	4310	father.bam	ok	sv_demo/chr1_25000_25131/father.cram
+chr1:25000-25131	sv_demo	DUP	1	4	mother	mother	chr1:24301-27200	698	4313	mother.bam	ok	sv_demo/chr1_25000_25131/mother.cram
+chr1:54860-55115	sv_demo	BND	1	5	child	child	chr1:54161-55815,chr2:14162-15841	814	7563	child.bam	ok	sv_demo/chr1_54860_55115/child.cram
+chr1:54860-55115	sv_demo	BND	1	5	father	father	chr1:54161-55815,chr2:14162-15841	702	5638	father.bam	ok	sv_demo/chr1_54860_55115/father.cram
+chr1:54860-55115	sv_demo	BND	1	5	mother	mother	chr1:54161-55815,chr2:14162-15841	772	5846	mother.bam	ok	sv_demo/chr1_54860_55115/mother.cram
+chr1:26358-26500	sv_demo	DUP	1	6	child	child	chr1:24301-27200	858	5976	child.bam	shared=chr1_25000_25131 ok	sv_demo/chr1_25000_25131/child.cram
+chr1:26358-26500	sv_demo	DUP	1	6	father	father	chr1:24301-27200	678	4310	father.bam	shared=chr1_25000_25131 ok	sv_demo/chr1_25000_25131/father.cram
+chr1:26358-26500	sv_demo	DUP	1	6	mother	mother	chr1:24301-27200	698	4313	mother.bam	shared=chr1_25000_25131 ok	sv_demo/chr1_25000_25131/mother.cram
+chr1:9860-10000	sv_demo	DEL	1	7	child	child	chr1:9161-10700,chr1:11301-12840	561	5058	child.bam	ok	sv_demo/chr1_9860_10000/child.cram
+chr1:9860-10000	sv_demo	DEL	1	7	father	father	chr1:9161-10700,chr1:11301-12840	750	4708	father.bam	ok	sv_demo/chr1_9860_10000/father.cram
+chr1:9860-10000	sv_demo	DEL	1	7	mother	mother	chr1:9161-10700,chr1:11301-12840	750	4675	mother.bam	ok	sv_demo/chr1_9860_10000/mother.cram
+chr1:12000-12140	sv_demo	DEL	1	8	child	child	chr1:9161-10700,chr1:11301-12840	561	5058	child.bam	shared=chr1_9860_10000 ok	sv_demo/chr1_9860_10000/child.cram
+chr1:12000-12140	sv_demo	DEL	1	8	father	father	chr1:9161-10700,chr1:11301-12840	750	4708	father.bam	shared=chr1_9860_10000 ok	sv_demo/chr1_9860_10000/father.cram
+chr1:12000-12140	sv_demo	DEL	1	8	mother	mother	chr1:9161-10700,chr1:11301-12840	750	4675	mother.bam	shared=chr1_9860_10000 ok	sv_demo/chr1_9860_10000/mother.cram
+chr2:9858-10132	sv_demo	INS	3	9	child	child	chr2:9159-10832	408	3558	child.bam	ok	sv_demo/chr2_9858_10132/child.cram
+chr2:9858-10132	sv_demo	INS	3	9	father	father	chr2:9159-10832	378	3087	father.bam	ok	sv_demo/chr2_9858_10132/father.cram
+chr2:9858-10132	sv_demo	INS	3	9	mother	mother	chr2:9159-10832	398	3103	mother.bam	ok	sv_demo/chr2_9858_10132/mother.cram
+chr2:21866-22078	sv_demo	INS	4	10	child	child	chr2:21167-22778	450	4174	child.bam	ok	sv_demo/chr2_21866_22078/child.cram
+chr2:21866-22078	sv_demo	INS	4	10	father	father	chr2:21167-22778	402	3104	father.bam	ok	sv_demo/chr2_21866_22078/father.cram
+chr2:21866-22078	sv_demo	INS	4	10	mother	mother	chr2:21167-22778	426	3182	mother.bam	ok	sv_demo/chr2_21866_22078/mother.cram

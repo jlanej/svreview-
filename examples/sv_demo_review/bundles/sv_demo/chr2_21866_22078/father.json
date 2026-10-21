@@ -1,0 +1,12 @@
+{
+ "member": "father",
+ "sample": "father",
+ "source": "local",
+ "source_url": "father.bam",
+ "regions": [
+  "chr2:21167-22778"
+ ],
+ "reads": 402,
+ "bytes": 3104,
+ "fetched": "2026-10-21 13:03:30"
+}

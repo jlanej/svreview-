@@ -1,0 +1,13 @@
+{
+ "member": "mother",
+ "sample": "mother",
+ "source": "local",
+ "source_url": "mother.bam",
+ "regions": [
+  "chr1:54161-55815",
+  "chr2:14162-15841"
+ ],
+ "reads": 772,
+ "bytes": 5846,
+ "fetched": "2026-10-21 13:03:30"
+}

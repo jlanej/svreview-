@@ -1,0 +1,35 @@
+{
+ "trio": "sv_demo",
+ "candidate": "chr1:25000-25131",
+ "chrom": "chr1",
+ "start": 25000,
+ "end": 25131,
+ "sv_type": "DUP",
+ "review_tier": 1,
+ "rank": 4,
+ "windows": [
+  "chr1:24301-27200"
+ ],
+ "skipped_windows": [],
+ "pad": 700,
+ "members": {
+  "child": "child",
+  "father": "father",
+  "mother": "mother"
+ },
+ "status": {
+  "child": "ok",
+  "father": "ok",
+  "mother": "ok"
+ },
+ "shared_by": [
+  {
+   "candidate": "chr1:26358-26500",
+   "name": "chr1_26358_26500",
+   "sv_type": "DUP",
+   "review_tier": 1,
+   "rank": 6
+  }
+ ],
+ "written": "2026-10-21 13:03:30"
+}

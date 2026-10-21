@@ -1,0 +1,27 @@
+{
+ "trio": "sv_demo",
+ "candidate": "chr2:9858-10132",
+ "chrom": "chr2",
+ "start": 9858,
+ "end": 10132,
+ "sv_type": "INS",
+ "review_tier": 3,
+ "rank": 9,
+ "windows": [
+  "chr2:9159-10832"
+ ],
+ "skipped_windows": [],
+ "pad": 700,
+ "members": {
+  "child": "child",
+  "father": "father",
+  "mother": "mother"
+ },
+ "status": {
+  "child": "ok",
+  "father": "ok",
+  "mother": "ok"
+ },
+ "shared_by": [],
+ "written": "2026-10-21 13:03:30"
+}
