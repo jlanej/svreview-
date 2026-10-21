@@ -24,27 +24,28 @@ kmer-discovery --child NA19139.cram --father NA19137.cram --mother NA19138.cram 
   --ref-fasta GRCh38_full_analysis_set_plus_decoy_hla.fa --out-prefix bench/NA19139.discovery \
   --kraken2-db "$KRAKEN2_DB" --threads 16 --memory 64G
 
-# 2. the candidate table, by the screen's rules (one run: no recurrence across children)
-svreview candidates --run bench/NA19139.discovery --trio NA19139 --sex 2 --out bench/candidates.tsv
-
-# 3. the bundles: every tier-1 and tier-2 candidate, 10 kb either side (the screen's pad), the three CRAMs
-svreview bundle --candidates bench/candidates.tsv --tier 1,2 --pad 10000 \
+# 2. the review set (docs/FORMAT.md): the table by the screen's rules (one run: no recurrence across children),
+#    the bundles of every tier-1 and tier-2 candidate (10 kb either side, the screen's pad; CRAM with the
+#    reference embedded), the run's files, trios.tsv
+svreview candidates --run bench/NA19139.discovery --trio NA19139 --sex 2 --out set/candidates.tsv
+svreview bundle --candidates set/candidates.tsv --tier 1,2 --pad 10000 --cram \
   --child NA19139.cram --father NA19137.cram --mother NA19138.cram \
-  --ref GRCh38_full_analysis_set_plus_decoy_hla.fa --out-dir bench/review
+  --ref GRCh38_full_analysis_set_plus_decoy_hla.fa --out-dir set/bundles
+mkdir -p set/runs && cp bench/NA19139.discovery.metrics.json bench/NA19139.discovery.informative.bam* set/runs/
+printf 'trio\tchild\tfather\tmother\tchild_sex\tmetrics\tinformative\nNA19139\tNA19139\tNA19137\tNA19138\t2\truns/NA19139.discovery.metrics.json\truns/NA19139.discovery.informative.bam\n' > set/trios.tsv
+svreview check set --deep
 
-# 4. the site: BAMs for the browser, the informative reads tagged, one manifest
-svreview site --candidates bench/candidates.tsv --bundles bench/review --out docs/example/NA19139 \
-  --metrics bench/NA19139.discovery.metrics.json --informative bench/NA19139.discovery.informative.bam \
-  --ref GRCh38_full_analysis_set_plus_decoy_hla.fa --title "NA19139 (1000 Genomes YRI trio)"
+# 3. the site: BAMs for the browser, the informative reads tagged, one manifest
+svreview site set --out docs/example/NA19139 --title "NA19139 (1000 Genomes YRI trio)"
 
-# 5. review: svreview serve docs/example/NA19139 --open; the verdicts land in verdicts.tsv beside the manifest
-# 6. the record: svreview verdicts --verdicts docs/example/NA19139/verdicts.tsv \
-#      --candidates docs/example/NA19139/candidates.tsv --out docs/example/NA19139/candidates.verdicts.tsv
+# 4. review: svreview serve docs/example/NA19139 --open; the verdicts land in verdicts.tsv beside the manifest
+# 5. the record: svreview verdicts --verdicts docs/example/NA19139/verdicts.tsv \
+#      --candidates set/candidates.tsv --out set/candidates.verdicts.tsv
 ```
 
 Or, with the Analysis-side review bundles already cut (the trio screen's `bundle_candidates.py`, mini-CRAMs
-with the reference embedded, `bundle.tsv`): step 4 alone, `--bundles` pointed at that directory and no `--ref`
-needed.
+with the reference embedded, `bundle.tsv`): they are the set's `bundles/` as they are; add `candidates.tsv`
+(the screen's `review_set.tsv`) and `trios.tsv`, and steps 2 and 3 are `svreview check` and `svreview site`.
 
 ## What goes into the repository, and what does not
 

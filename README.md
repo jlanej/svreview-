@@ -13,10 +13,16 @@ by range requests. GitHub Pages serves it ([jlanej.github.io/svreview-](https://
 with the demo loaded); `svreview serve` serves a review directory at home and writes the verdicts to disk as
 they are given; a site folder can also be opened straight from the page, with no server at all.
 
-**Status: 0.1.0, the first version.** The viewer works on the demo (the tool's own simulated trio, under
-[`docs/demo`](docs/demo/)); the Python side turns an analysis' files into a site and reads the verdicts back;
-the browser's BAM reader is checked record for record against htslib. The public example on a real 1000
-Genomes trio is [planned](docs/example/README.md), not built.
+The input is **one review set** ([docs/FORMAT.md](docs/FORMAT.md)): a directory with the candidate table, a
+trios table and the reads per candidate (bundles) or per trio. Any analysis - the 1000 Genomes trio screen,
+the GMKF arm, a single trio at home - writes one; `svreview check` says whether it is complete; nothing inside
+svreview is specific to any of them.
+
+**Status: 0.1.0, the first version.** The viewer works on the demo (the tool's own simulated trio: the set
+under [`examples/sv_demo_review`](examples/sv_demo_review/), the site under [`docs/demo`](docs/demo/)); the
+Python side turns a set into a site and reads the verdicts back; the browser's BAM reader is checked record
+for record against htslib. The public example on a real 1000 Genomes trio is
+[planned](docs/example/README.md), not built.
 
 > **svreview is not samplot.** The picture - coverage split by mapping quality, read pairs as lines at their
 > insert size and split reads as dotted lines, coloured by the event their strands imply - follows
@@ -51,57 +57,25 @@ Genomes trio is [planned](docs/example/README.md), not built.
 | **the table** | every candidate; filter by tier, by reviewed or not, by text; sort by tier and rank, locus, type, reads, verdict; `j`/`k` walk it. |
 | **the verdict** | `1` de novo, `2` inherited, `3` artifact, `4` unsure, `0` clear, `n` note; kept in the browser, written to the server when there is one, exported as a TSV (`e`). |
 
-## The demo
+## The input: a review set
 
-[`docs/demo`](docs/demo/) is kmer_denovo_filter's [`examples/sv_demo`](https://github.com/jlanej/kmer_denovo_filter/tree/main/examples/sv_demo):
-a random two-chromosome reference (60 kb and 30 kb), 2×150 bp pairs at 30×, the parents reference-only, the
-child heterozygous for a 2 kb deletion, a 1.5 kb tandem duplication, a 2 kb inversion, a reciprocal chr1/chr2
-translocation, a 55 bp and a 250 bp novel insertion and an SNV. `kmer-discovery` reports the six junctions
-(DEL, DUP, INV × 2, BND × 2) and the two insertions; the non-human screen ran with a toy kraken2 database (the
-reference as *Homo sapiens*, the 250 bp insertion as *Escherichia coli*), so one candidate carries the `nhf`
-flag with its taxon, as a contaminant would. Ten candidate rows (the seven junction ends and the two
-insertions), six bundles (the two ends of a pair share one), 700 bp of padding: the deletion's and the
-inversion's ends sit in two panels, the duplication's in one.
+[docs/FORMAT.md](docs/FORMAT.md) is the specification; [`examples/sv_demo_review`](examples/sv_demo_review/)
+is a complete set. In short:
 
-```bash
-scripts/make_demo.sh          # rebuilds it in the pinned image (docker); or, with kmer-discovery on PATH:
-svreview demo --out docs/demo --kmer-denovo-filter /path/to/kmer_denovo_filter
+```
+<set>/
+  svreview.json      {"format": 1, "title": ..., "pad": 10000}
+  candidates.tsv     one row per candidate region: trio chrom start end (required), class, sv_type, the
+                     evidence counts, junctions (partner|strands|type|reads), flags, review_tier, rank, nhf
+  trios.tsv          one row per trio: trio child father mother, child_sex, and where its files are - per-trio
+                     alignments (instead of bundles), the run's metrics.json, its informative BAM, a reference
+  bundles/<trio>/<chrom>_<start>_<end>/   child/father/mother as CRAM (reference embedded) or BAM, candidate.json
+  verdicts.tsv       what the review writes back
 ```
 
-## The contract: what goes in, what comes out
-
-Everything svreview reads is what the analysis writes already; the layouts are the 1000 Genomes trio screen's
-(`examples/1kg_trios/summarize_trios.py` in the tool; `flag_candidates.py` and `bundle_candidates.py` in the
-review stages around it), read by column names, so a column added later costs nothing.
-
-**The candidate table** (TSV): one row per candidate region of a child. Required: `chrom start end trio` (the
-BED's coordinates: 0-based, half-open). Read when present: `class sv_type`, the evidence columns `reads
-unique_kmers split_reads discordant_pairs unmapped_mates breakpoint_reads large_indel_reads max_clip_len max_mapq
-mapq0_reads`, `junctions` (`partner|strands|type|reads` entries joined by `;`, the partner being the other end's
-region and the strands the BEDPE line's), `locus_flags`, `partner_flags`, `flags`, `review_tier` (1 clean with
-both ends, 2 clean with a junction, 3 clean without, 4 flagged), `rank` (1 = strongest), `nhf_reads` / `nhf`
-(`.` = unscreened, which is not 0). Any other column is carried into the manifest unread.
-
-**A bundle** per candidate: `<trio>/<chrom>_<start>_<end>/` with `child`, `father`, `mother` as mini-CRAMs or
-BAMs plus their indexes - the reads over the candidate's windows (its region and each partner's, padded) and
-their mates wherever they map - `candidate.json` (the windows as samtools regions, the members, who shares the
-bundle) and, at the root, `bundle.tsv` (one row per member per candidate: `candidate trio sv_type review_tier
-rank member sample region reads bytes source_url status path`). The other end of a pair is a symlink to the
-first end's directory.
-
-**The run's metrics** (`<prefix>.metrics.json`): `regions` (the BED's rows) and `nonhuman_fraction` (`status`
-screened / disabled / failed, the sampled fractions, one entry per screened region with its fractions and top
-taxon). **The informative BAM** (`<prefix>.informative.bam`): the child's reads with proband-unique k-mers.
-
-**The verdict TSV** (what comes out): `candidate trio chrom start end sv_type verdict note reviewer reviewed_at`,
-one row per verdict given, appended; `verdict` is one of `de_novo inherited artifact unsure`, an empty one
-clears; the last row for a candidate wins. `svreview verdicts` merges it into the candidate table as four
-columns, `verdict verdict_note verdict_reviewer verdict_at`, keyed by `trio chrom start end`: the flag the
-analysis reads back.
-
-**Optional**: `<role>.taxa.tsv` beside a bundle's members (`read taxid name human`, kraken2 over the bundle's
-reads) gives the colour-by-taxon mode its per-read labels; the run's screen gives only the region's fraction and
-top taxon.
+The 1000 Genomes trio screen's table and bundles are this layout already; a table of junction pairs (the GMKF
+arm's) becomes it by writing one row per end; per-trio minified CRAMs stand in for bundles through
+`trios.tsv`. Coordinates are BED's (0-based, half-open); `.` is missing, never 0; nothing is ever dropped.
 
 ## Use
 
@@ -109,24 +83,42 @@ top taxon.
 pip install git+https://github.com/jlanej/svreview-        # Python ≥ 3.9, pysam
 # or: python -m venv .venv && . .venv/bin/activate && pip install -e '.[test]'
 
-# the candidate table of ONE run, by the screen's rules (a cohort's table comes from the screen itself)
-svreview candidates --run out/KID.discovery --trio KID --out out/candidates.tsv [--sex 2] [--classes SV,AMBIGUOUS]
-# the bundles, from the trio's BAMs or CRAMs at hand (the analysis cuts its own where the CRAMs are)
-svreview bundle --candidates out/candidates.tsv --child kid.cram --father dad.cram --mother mom.cram \
-    --ref ref.fa --out-dir out/review --pad 10000 [--tier 1,2]
-# the site: BAMs for the browser, the informative reads tagged dk:i:1, one manifest
-svreview site --candidates out/candidates.tsv --bundles out/review --out site \
-    --metrics out/KID.discovery.metrics.json --informative out/KID.discovery.informative.bam [--ref ref.fa] [--with-viewer]
-# review
-svreview serve site --open                # range requests; verdicts appended to site/verdicts.tsv as they are given
-# the record
-svreview verdicts --verdicts site/verdicts.tsv --candidates site/candidates.tsv --out site/candidates.verdicts.tsv
+svreview check  <set> [--deep]                  # what is there, what is missing; exit 1 on an error
+svreview site   <set> --out <site> [--ref FA]   # BAMs for the browser, the informative reads tagged, one manifest
+svreview serve  <site> --open                   # review; verdicts appended to <site>/verdicts.tsv as they are given
+svreview verdicts --verdicts <site>/verdicts.tsv --candidates <set>/candidates.tsv --out <set>/candidates.verdicts.tsv
+
+# a set from one kmer-discovery run (a cohort's table comes from the screen itself)
+svreview candidates --run out/KID.discovery --trio KID --out set/candidates.tsv [--sex 2] [--classes SV,AMBIGUOUS]
+svreview bundle --candidates set/candidates.tsv --child kid.cram --father dad.cram --mother mom.cram \
+    --ref ref.fa --out-dir set/bundles --pad 10000 [--tier 1,2] [--cram]
+#   then set/trios.tsv by hand (trio, child, father, mother; metrics and informative under runs/) and svreview check
 ```
 
-The viewer takes `?data=<url of the manifest's directory>` (default `demo`, the demo beside the page) and
-`&c=<trio>/<chrom>_<start>_<end>` for the candidate; **open folder** loads a site directory from disk (the
-browser reads the files directly, nothing is uploaded), for a review on a laptop with no server. `--with-viewer`
-copies the page beside the manifest, so a site directory is complete in itself.
+`svreview site` also takes the pieces as flags (`--candidates --bundles --trios --metrics --informative`) for a
+run without a set directory. The viewer takes `?data=<url of the manifest's directory>` (default `demo`, the
+demo beside the page) and `&c=<trio>/<chrom>_<start>_<end>` for the candidate; **open folder** loads a site
+directory from disk (the browser reads the files directly, nothing is uploaded), for a review on a laptop with
+no server. `--with-viewer` copies the page beside the manifest, so a site directory is complete in itself.
+
+## The demo
+
+[`examples/sv_demo_review`](examples/sv_demo_review/) is kmer_denovo_filter's
+[`examples/sv_demo`](https://github.com/jlanej/kmer_denovo_filter/tree/main/examples/sv_demo) as a review set:
+a random two-chromosome reference (60 kb and 30 kb), 2×150 bp pairs at 30×, the parents reference-only, the
+child heterozygous for a 2 kb deletion, a 1.5 kb tandem duplication, a 2 kb inversion, a reciprocal chr1/chr2
+translocation, a 55 bp and a 250 bp novel insertion and an SNV. `kmer-discovery` reports the six junctions
+(DEL, DUP, INV × 2, BND × 2) and the two insertions; the non-human screen ran with a toy kraken2 database (the
+reference as *Homo sapiens*, the 250 bp insertion as *Escherichia coli*), so one candidate carries the `nhf`
+flag with its taxon, as a contaminant would. Ten candidate rows (the seven junction ends and the two
+insertions), six CRAM bundles with the reference embedded (the two ends of a pair share one), 700 bp of
+padding: the deletion's and the inversion's ends sit in two panels, the duplication's in one.
+[`docs/demo`](docs/demo/) is `svreview site` on it.
+
+```bash
+scripts/make_demo.sh          # rebuilds both in the pinned image (docker); or, with kmer-discovery on PATH:
+svreview demo --set examples/sv_demo_review --out docs/demo --kmer-denovo-filter /path/to/kmer_denovo_filter
+```
 
 ## Design
 
@@ -135,8 +127,8 @@ the size). The browser could decode them - `@gmod/cram` does - but a CRAM cut ag
 embedded reference needs the reference's bases at every window, which means shipping a slice of the reference
 per bundle (a new piece of the contract) or a 3 GB FASTA behind a static site. svreview converts every member
 to BAM at site-build time instead (`svreview site`, one pysam pass per member, the reference at hand there,
-or embedded in the CRAM as the trio screen's bundles have it). A mini-BAM is a few MB, self-contained, and
-what every other tool reads too; the CRAMs stay as the archival copy.
+or embedded in the CRAM as `svreview bundle --cram` and the trio screen's bundles have it). A mini-BAM is a
+few MB, self-contained, and what every other tool reads too; the CRAMs stay as the archival copy.
 
 **No build step.** The page is plain HTML, CSS and ES modules; the BAM reader is its own (`docs/js/bgzf.js`,
 `bai.js`, `bam.js`: BGZF blocks inflated by the browser's `DecompressionStream`, the index's chunks for a
@@ -144,10 +136,11 @@ region, records parsed as the SAM specification lays them out) and is checked ag
 same files (`tests/js`). svplot-js took `@gmod/bam` through webpack; here nothing is bundled, so the repository
 is what the browser runs, and the whole viewer serves from a directory.
 
-**One manifest.** `svreview site` joins the candidate table, the bundles, the metrics and the informative BAM
-into `manifest.json` (contract version 1): per candidate the typed row, the windows that were cut (0-based,
+**One input format, one manifest.** The analysis writes a review set; `svreview site` joins it into
+`manifest.json` (contract version 1): per candidate the typed row, the windows that were cut (0-based,
 half-open), the members' BAMs with their read counts and the count of informative reads, the region metrics
-and the non-human fraction of the region and its partners, and the original row. The viewer reads nothing else.
+and the non-human fraction of the region and its partners, and the original row. The viewer reads nothing
+else, and svreview adapts to no arm: the set is the adapter, and `svreview check` is its test.
 
 **The picture.** samplot's, by design: reviewers know it. The additions follow the questions a reviewer of
 this tool's output asks. Are both breakpoints real, and do the same molecules join them (the two panels, the
@@ -163,10 +156,12 @@ ever dropped on the viewer's say-so.
 ## Layout
 
 ```
-docs/                 the static site (GitHub Pages): index.html, js/, css/, demo/, example/ (the plan)
-src/svreview/         contract.py (the layouts), candidates.py (the table of one run), bundle.py (the cut),
-                      site.py (the manifest and the BAMs), serve.py (range requests, verdict POST), cli.py, demo.py
-tests/                pytest: the contract, the table, the cut, the site, the server, the verdicts
+docs/                 the static site (GitHub Pages): index.html, js/, css/, demo/, FORMAT.md, example/ (the plan)
+examples/             sv_demo_review: a complete review set, the demo's input
+src/svreview/         contract.py (the tables), review_set.py (the set: open, resolve, check), candidates.py (the
+                      table of one run), bundle.py (the cut), site.py (the manifest and the BAMs), serve.py
+                      (range requests, verdict POST), cli.py, demo.py
+tests/                pytest: the contract, the set, the table, the cut, the site, the server, the verdicts
 tests/js/             node --test: the BAM reader against pysam fixtures; browser.html runs the same checks in a browser
 scripts/              make_demo.sh (the demo in the pinned image), toy_kraken2_library.py
 ```
@@ -180,6 +175,6 @@ is complete. `svreview serve . --path tests/js/browser.html` runs the reader's c
   arguments). The demo is simulated; the example is public.
 - The viewer never filters: every candidate of the table is listed, flags and all; a verdict is a column, not a
   drop.
-- Coordinates are kept as the files have them (BED 0-based half-open in the table and the manifest; samtools
+- Coordinates are kept as the files have them (BED 0-based half-open in the tables and the manifest; samtools
   regions 1-based in `candidate.json` and on screen).
 - MIT licence.
