@@ -1,0 +1,11 @@
+chrom	start	end	trio	class	sv_type	reads	unique_kmers	split_reads	discordant_pairs	unmapped_mates	breakpoint_reads	large_indel_reads	max_clip_len	max_mapq	mapq0_reads	n_trios_at_locus	junctions	locus_flags	partner_flags	partner_recurrent	partner_multiplicity	both_ends	rank	nhf_reads	nhf	prior_recurrence	flags	review_tier
+chr1	9860	10000	sv_demo	SV	DEL	11	28	6	4	0	8	0	72	60	0	1	chr1:12000-12140|+-|DEL|15	.	.	0	1	1	7	11	0.0	.	.	1
+chr1	12000	12140	sv_demo	SV	DEL	8	28	7	3	0	7	0	54	60	0	1	chr1:9860-10000|+-|DEL|15	.	.	0	1	1	8	8	0.0	.	.	1
+chr1	25000	25131	sv_demo	SV	DUP	10	30	7	4	0	9	0	73	60	0	1	chr1:26358-26500|-+|DUP|18	.	.	0	1	1	4	10	0.0	.	.	1
+chr1	26358	26500	sv_demo	SV	DUP	10	30	7	6	0	8	0	73	60	0	1	chr1:25000-25131|-+|DUP|18	.	.	0	1	1	6	10	0.0	.	.	1
+chr1	39870	40141	sv_demo	SV	INV	13	59	9	6	0	12	0	71	60	0	1	chr1:41890-42133|++|INV|13;chr1:41890-42133|--|INV|7	.	.	0	2	1	1	13	0.0	.	.	1
+chr1	41890	42133	sv_demo	SV	INV	11	59	9	5	0	10	0	74	60	0	1	chr1:39870-40141|++|INV|13;chr1:39870-40141|--|INV|7	.	.	0	2	1	2	11	0.0	.	.	1
+chr1	54860	55115	sv_demo	SV	BND	11	60	8	5	0	9	0	73	60	0	1	chr2:14861-15141|+-|BND|10;chr2:14861-15141|-+|BND|8	.	.	0	2	1	5	11	0.0	.	.	1
+chr2	9858	10132	sv_demo	SV	INS	23	85	0	0	0	12	7	72	60	0	1	.	.	.	0	0	0	9	23	0.0	.	.	3
+chr2	14861	15141	sv_demo	SV	BND	12	60	6	6	0	10	0	72	60	0	1	chr1:54860-55115|+-|BND|10;chr1:54860-55115|-+|BND|8	.	.	0	2	1	3	12	0.0	.	.	1
+chr2	21866	22078	sv_demo	SV	INS	10	211	0	1	7	9	0	114	60	0	1	.	.	.	0	0	0	10	24	0.5833	.	nhf	4
