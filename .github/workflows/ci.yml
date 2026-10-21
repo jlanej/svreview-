@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.9', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install (with test extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[test]'
+      - name: Tests
+        run: pytest -q
+
+  viewer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: The BAM reader and the read classification against pysam's fixtures
+        run: node --test tests/js
+      - name: The demo site is complete
+        run: |
+          test -f docs/demo/manifest.json
+          python3 -c "import json; m=json.load(open('docs/demo/manifest.json')); assert m['contract']==1 and m['summary']['with_bundle']==len(m['candidates'])>=6, m['summary']"
