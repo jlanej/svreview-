@@ -6,7 +6,7 @@ is the same cut for alignments at hand - the demo's BAMs, a bench trio - so that
 reviewed without the cohort machinery:
 
   <out>/<trio>/<chrom>_<start>_<end>/     one directory per candidate (the table's own window)
-    child.bam father.bam mother.bam (+ .bai)   the reads over the candidate's windows (own region and every
+    child.bam father.bam mother.bam (+ .bai)   (or .cram + .crai) the reads over the candidate's windows (own region and every
                                            junction partner, each padded by --pad, merged where they touch)
                                            and their mates wherever they map
     <member>.json                          what was cut (sample, source, windows, reads, bytes)
@@ -15,8 +15,9 @@ reviewed without the cohort machinery:
                                            region, reads, bytes, source_url, status, path
 
 The other end of a tier-1 pair has the same windows: its directory is a symlink to the first's (status
-``shared=<dir>``), as the analysis does it. Members are written as BAM, which is what the viewer reads; a
-CRAM source needs its reference (``--ref``) unless the reference is embedded.
+``shared=<dir>``), as the analysis does it. Members are written as BAM (what the viewer reads) or, with
+``--cram``, as CRAM with the reference embedded (what the analysis' bundles are; ``svreview site`` converts
+back); a CRAM source needs its reference (``--ref``) unless the reference is embedded.
 """
 
 import collections
@@ -48,12 +49,19 @@ def contig_lengths(path, ref=None):
         return collections.OrderedDict(zip(f.references, f.lengths))
 
 
-def cut_member(src, out, windows, ref=None, threads=1):
+def cut_member(src, out, windows, ref=None, threads=1, dk_names=None, cram=False):
     """The reads overlapping *windows* (0-based half-open) and their mates wherever they map, as a sorted,
-    indexed BAM; returns the record count. A mate outside every window is fetched by name through the
-    mate's position (``mate()``), which is what ``samtools view -P`` does."""
+    indexed BAM (or, with *cram*, a CRAM with the reference embedded: needs *ref*); returns the record
+    count. A mate outside every window is fetched at the mate's position, which is what
+    ``samtools view -P`` does. Alignments of the reads in *dk_names* (``{(name, read_number)}``) get ``dk:i:1``."""
     tmp = out + ".unsorted.bam"
     n = 0
+
+    def write(o, r):
+        if dk_names is not None and (r.query_name, 1 if r.is_read1 else (2 if r.is_read2 else 0)) in dk_names:
+            r.set_tag("dk", 1, "i")
+        o.write(r)
+
     with _open(src, ref) as f:
         with pysam.AlignmentFile(tmp, "wb", template=f) as o:
             seen = set()
@@ -66,7 +74,7 @@ def cut_member(src, out, windows, ref=None, threads=1):
                     if key in seen:
                         continue
                     seen.add(key)
-                    o.write(r)
+                    write(o, r)
                     n += 1
                     if (r.is_paired and not r.mate_is_unmapped and r.next_reference_id >= 0
                             and not (r.is_secondary or r.is_supplementary)):
@@ -86,17 +94,27 @@ def cut_member(src, out, windows, ref=None, threads=1):
                     if key in seen:
                         continue
                     seen.add(key)
-                    o.write(r)
+                    write(o, r)
                     n += 1
-    pysam.sort("-@", str(max(1, threads)), "-o", out, tmp)
-    os.remove(tmp)
+    if cram:
+        if not ref:
+            raise contract.ContractError("a CRAM bundle needs the reference (--ref) to embed")
+        sorted_bam = out + ".sorted.bam"
+        pysam.sort("-@", str(max(1, threads)), "-o", sorted_bam, tmp)
+        os.remove(tmp)
+        pysam.view("-C", "-T", ref, "--output-fmt-option", "embed_ref=1", "-o", out, sorted_bam, catch_stdout=False)
+        os.remove(sorted_bam)
+    else:
+        pysam.sort("-@", str(max(1, threads)), "-o", out, tmp)
+        os.remove(tmp)
     pysam.index(out)
     return n
 
 
-def bundle_candidates(candidates, members, out_dir, pad=10000, ref=None, samples=None, threads=1, log=print):
+def bundle_candidates(candidates, members, out_dir, pad=10000, ref=None, samples=None, threads=1, log=print, cram=False):
     """Cut one bundle per candidate of *candidates* (``[Candidate]``) from *members*
     (``{role: path}``); *samples* names each member (``{role: sample}``; default: the file's SM or the role).
+    With *cram*, the members are written as CRAMs with the reference embedded (as the analysis' bundles are).
     Returns the number of bundles written and the index path."""
     out_dir = os.path.abspath(out_dir)
     lengths = None
@@ -142,8 +160,11 @@ def bundle_candidates(candidates, members, out_dir, pad=10000, ref=None, samples
         status = collections.OrderedDict()
         parts = []
         for role in ROLES:
-            out = os.path.join(entry["dir"], role + ".bam")
-            n = cut_member(members[role], out, entry["windows"], ref, threads)
+            out = os.path.join(entry["dir"], role + (".cram" if cram else ".bam"))
+            for stale in (os.path.join(entry["dir"], role + ext) for ext in (".bam", ".bam.bai", ".cram", ".cram.crai")):
+                if os.path.exists(stale):
+                    os.remove(stale)
+            n = cut_member(members[role], out, entry["windows"], ref, threads, cram=cram)
             info = collections.OrderedDict()
             info["member"], info["sample"], info["source"], info["source_url"] = role, names[role], "local", members[role]
             info["regions"] = [contract.region_str(c, s + 1, e) for c, s, e in entry["windows"]]
