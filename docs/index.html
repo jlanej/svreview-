@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>svreview</title>
+<meta name="description" content="Review the structural-variant candidates of kmer_denovo_filter's discovery mode: both ends of a junction side by side with the reads that link them, the child's k-mer-informative reads highlighted, the parents' reads at the same windows, a verdict per candidate.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/svreview.css">
+</head>
+<body>
+<div id="app" class="empty">
+  <header class="top">
+    <div class="brand">
+      <span class="name">svreview</span>
+      <span id="title" class="title">loading…</span>
+      <span id="subtitle" class="subtitle"></span>
+    </div>
+    <div class="tools">
+      <label class="field">reviewer <input id="reviewer" type="text" placeholder="your name" size="12"></label>
+      <button id="export" title="download the verdict TSV (e)">export verdicts</button>
+      <label class="button" title="merge a verdict TSV">import <input id="import" type="file" accept=".tsv,.txt,text/tab-separated-values" hidden></label>
+      <label class="button" title="open a site folder written by svreview site">open folder <input id="open-folder" type="file" webkitdirectory directory multiple hidden></label>
+      <button id="help-button" title="keys and legend (?)">?</button>
+    </div>
+  </header>
+
+  <aside class="side">
+    <div class="filters">
+      <input id="filter-text" type="search" placeholder="filter: locus, trio, type, flag, note">
+      <div class="row">
+        <span id="tier-filter" class="tiers" title="review tiers: 1 clean with both ends, 2 clean with a junction, 3 clean without, 4 flagged">
+          <label><input type="checkbox" value="1" checked> 1</label>
+          <label><input type="checkbox" value="2" checked> 2</label>
+          <label><input type="checkbox" value="3" checked> 3</label>
+          <label><input type="checkbox" value="4" checked> 4</label>
+        </span>
+        <select id="filter-verdict" title="reviewed or not">
+          <option value="all">all</option>
+          <option value="unreviewed">unreviewed</option>
+          <option value="reviewed">reviewed</option>
+        </select>
+        <span id="table-count" class="muted"></span>
+        <span id="reviewed-count" class="muted"></span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="candidates">
+        <thead>
+          <tr>
+            <th data-sort="rank" title="tier">T</th>
+            <th data-sort="rank" title="rank (1 = strongest)">#</th>
+            <th data-sort="trio">trio</th>
+            <th data-sort="locus">locus</th>
+            <th data-sort="type">type</th>
+            <th data-sort="reads" title="breakpoint reads / reads">bkpt/reads</th>
+            <th>flags</th>
+            <th data-sort="verdict">verdict</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="card cand">
+      <div class="nav">
+        <button id="prev" title="previous (k)">◀</button>
+        <button id="next" title="next (j)">▶</button>
+        <div id="cand-title" class="cand-title"></div>
+      </div>
+      <div id="cand-evidence" class="evidence"></div>
+      <div class="chips"><span class="lbl">junctions</span><span id="cand-junctions"></span></div>
+      <div class="chips"><span class="lbl">flags</span><span id="cand-flags"></span> <span id="cand-nhf"></span> <span id="cand-informative"></span></div>
+      <div class="chips"><span class="lbl">windows</span><span id="cand-windows"></span></div>
+    </section>
+
+    <section class="card verdict-card">
+      <div id="verdict-buttons" class="verdict-buttons">
+        <button data-verdict="de_novo" class="de_novo" title="1">de novo</button>
+        <button data-verdict="inherited" class="inherited" title="2">inherited</button>
+        <button data-verdict="artifact" class="artifact" title="3">artifact</button>
+        <button data-verdict="unsure" class="unsure" title="4">unsure</button>
+        <button id="clear-verdict" title="0">clear</button>
+        <input id="note" type="text" placeholder="note (n)">
+      </div>
+      <div class="verdict-meta"><span id="verdict-meta"></span> <span id="verdict-sync"></span></div>
+    </section>
+
+    <section class="card plot-card">
+      <div class="controls">
+        <label>view <select id="mode"><option value="samplot">samplot (insert size)</option><option value="pileup">pileup (alignments)</option></select></label>
+        <label>colour <select id="colorBy"><option value="event">event type</option><option value="mapq">MAPQ</option><option value="informative">informative</option><option value="taxon">taxon</option></select></label>
+        <label>min MAPQ <select id="minMapq"><option value="0">0</option><option value="1">1</option><option value="20">20</option><option value="30">30</option></select></label>
+        <label><input id="hideProper" type="checkbox"> hide proper pairs</label>
+        <label><input id="highlightDk" type="checkbox" checked> highlight informative</label>
+        <label class="pile-only">rows <select id="pileRows"><option value="16">16</option><option value="24" selected>24</option><option value="36">36</option><option value="48">48</option></select></label>
+        <span id="status" class="status"></span>
+      </div>
+      <div class="plot-wrap"><canvas id="plot"></canvas></div>
+      <div id="legend" class="legend"></div>
+      <div id="member-summary" class="member-summary"></div>
+    </section>
+  </main>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <div id="help" class="help" hidden>
+    <div class="help-body">
+      <button id="help-close" class="close">×</button>
+      <h2>svreview</h2>
+      <p>One candidate of kmer_denovo_filter's discovery mode at a time: its own region and each junction partner's window side by side, the child over the father and the mother, the reads that cross the junction drawn across the panels. The candidate region is shaded blue, a partner region orange; the dashed line marks where the child's clipped reads agree the breakpoint is.</p>
+      <p><b>samplot view</b> (after Belyeu et al.): coverage split by MAPQ (dark ≥ 20, light below), then every read pair as a line at its insert size and every split read as a dotted line at its span, coloured by the event the strands imply. Reads between chromosomes sit at the top. <b>Pileup view</b>: the alignments as bars, soft clips as orange stubs, mates joined by a grey line, cross-window links as arcs.</p>
+      <p><b>The k-mer evidence</b>: reads carrying proband-unique k-mers (the run's informative BAM, <code>dk:i:1</code>) carry an orange halo, and their coverage is the orange layer. A junction the parents' reads also show is inherited; one only the child's informative reads show is de novo or somatic.</p>
+      <p><b>Keys</b>: <kbd>j</kbd>/<kbd>k</kbd> next/previous candidate · <kbd>1</kbd> de novo <kbd>2</kbd> inherited <kbd>3</kbd> artifact <kbd>4</kbd> unsure <kbd>0</kbd> clear · <kbd>n</kbd> note · <kbd>p</kbd> toggle pileup · <kbd>e</kbd> export the verdict TSV · <kbd>?</kbd> this help.</p>
+      <p>Verdicts are kept in this browser and, when the page is served by <code>svreview serve</code>, appended to <code>verdicts.tsv</code> beside the manifest as they are given; <b>export</b> downloads them as the same TSV (<code>svreview verdicts</code> merges it into the candidate table).</p>
+      <p class="muted">svreview is not samplot: the picture follows samplot (Belyeu JR, Nicholas TJ, Pedersen BS, et al. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants. GigaScience 2018;7(7):giy064; github.com/ryanlayer/samplot), re-drawn in the browser for the trio and the k-mer evidence. For publication figures use samplot.</p>
+    </div>
+  </div>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

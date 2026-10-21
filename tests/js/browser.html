@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>svreview: BAM reader checks</title>
+<style>
+body { font: 13px/1.5 ui-monospace, Menlo, monospace; margin: 20px; }
+.ok { color: #007d5a; } .fail { color: #c00; font-weight: bold; }
+#summary { font-weight: bold; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div id="summary">running…</div>
+<pre id="out"></pre>
+<script type="module">
+// serve the repository root (svreview serve . --path tests/js/browser.html) and open this page
+import { runChecks } from './check_bam.mjs';
+const loadBytes = async (p) => { const r = await fetch('fixtures/' + p); if (!r.ok) throw new Error(`${p}: HTTP ${r.status}`); return new Uint8Array(await r.arrayBuffer()); };
+const loadJson = async (p) => { const r = await fetch('fixtures/' + p); if (!r.ok) throw new Error(`${p}: HTTP ${r.status}`); return r.json(); };
+try {
+  const results = await runChecks(loadBytes, loadJson);
+  const failed = results.filter((r) => !r.ok).length;
+  document.getElementById('summary').textContent = `${results.length - failed} of ${results.length} checks passed` + (failed ? ` (${failed} FAILED)` : '');
+  document.getElementById('summary').className = failed ? 'fail' : 'ok';
+  document.getElementById('out').innerHTML = results.map((r) => `<span class="${r.ok ? 'ok' : 'fail'}">${r.ok ? 'ok  ' : 'FAIL'}</span> ${r.name}${r.detail ? ' - ' + r.detail : ''}`).join('\n');
+  window.svreviewChecks = results;
+} catch (e) {
+  document.getElementById('summary').textContent = 'the runner itself failed: ' + e.message;
+  document.getElementById('summary').className = 'fail';
+  console.error(e);
+}
+</script>
+</body>
+</html>
