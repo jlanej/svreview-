@@ -9,7 +9,7 @@ import urllib.request
 import pysam
 import pytest
 
-from svreview import bundle, candidates, contract, serve, site
+from svreview import bundle, candidates, contract, review_set, serve, site
 
 REF_LEN = 6000
 HEADER = {"HD": {"VN": "1.6", "SO": "coordinate"}, "SQ": [{"SN": "chr1", "LN": REF_LEN}, {"SN": "chr2", "LN": REF_LEN}]}
@@ -218,7 +218,7 @@ def test_site_without_bundle_and_cram_needing_reference(run, tmp_path):
     assert manifest["candidates"][0]["windows"][0]["start"] == 0    # padded by the default, clipped at 0
     assert manifest["trios"]["TRIO"]["nhf"]["status"] == "none"
     with pytest.raises(contract.ContractError):
-        site._open_alignments(os.path.join(run["dir"], "missing.cram"))
+        review_set.open_alignments(os.path.join(run["dir"], "missing.cram"))
 
 
 def test_cli_round_trip(run, capsys):
