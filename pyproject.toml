@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "svreview"
+version = "0.1.0"
+description = "A viewer for reviewing the structural-variant candidates of kmer_denovo_filter's discovery mode: both ends of a junction side by side with the reads that link them, the child's k-mer-informative reads highlighted, MAPQ and the non-human fraction as colour, the parents' reads at the same windows, navigation by the candidate table, and a verdict per candidate written to a TSV the analysis reads back."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["structural variants", "de novo", "trio", "k-mer", "BAM", "CRAM", "samplot", "review", "viewer"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+  "Intended Audience :: Science/Research",
+]
+dependencies = ["pysam>=0.22"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+svreview = "svreview.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+markers = ["slow: the end-to-end demo (simulate, discover, bundle, site; needs kmer-discovery on PATH)"]
+testpaths = ["tests"]

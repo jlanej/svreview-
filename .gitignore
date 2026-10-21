@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+build/
+dist/
+*.egg-info/
+/work/
+/mock_out/
+/ci_out/
+node_modules/
+.DS_Store
+# never any real data: alignments, references, pedigrees, sample lists. The demo under docs/demo is the
+# simulated trio of kmer_denovo_filter's examples/sv_demo (a random 90 kb reference), nothing else.
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.ped
+*.fa.gz
+/docs/example/data/
+/docs/example/work/
+!/docs/demo/**
